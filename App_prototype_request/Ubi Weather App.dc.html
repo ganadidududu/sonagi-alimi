@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0}
+  *{box-sizing:border-box}
+  a{color:#3a7bd5;text-decoration:none}
+  a:hover{color:#2c5fa8}
+  ::-webkit-scrollbar{width:0;height:0}
+  @keyframes ubi-rainfall{0%{transform:translateY(-20px);opacity:0}10%{opacity:.7}100%{transform:translateY(760px);opacity:.1}}
+  @keyframes ubi-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes ubi-shimmer{0%{background-position:-260px 0}100%{background-position:260px 0}}
+  @keyframes ubi-fadeup{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes ubi-shine{0%{transform:translateX(-120%)}60%,100%{transform:translateX(220%)}}
+  @keyframes ubi-blob{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,-14px) scale(1.12)}}
+  @keyframes ubi-pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}70%{box-shadow:0 0 0 12px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+  .ubi-fadeup{animation:ubi-fadeup .5s cubic-bezier(.2,.8,.2,1) both}
+  .ubi-skel{background:linear-gradient(90deg,#e6ecf3 25%,#f3f7fb 37%,#e6ecf3 63%);background-size:520px 100%;animation:ubi-shimmer 1.3s infinite linear;border-radius:14px}
+</style>
+</helmet>
+
+<div style="min-height:100vh;width:100%;background:radial-gradient(120% 120% at 50% 0%,#eaf2fb 0%,#dfe8f2 55%,#d5dfea 100%);font-family:'Noto Sans KR',sans-serif;display:flex;gap:36px;align-items:flex-start;justify-content:center;padding:40px 28px 60px;flex-wrap:wrap">
+
+  <!-- ======= CONTROL PANEL ======= -->
+  <div style="width:250px;flex:none;position:sticky;top:40px;display:flex;flex-direction:column;gap:22px">
+    <div>
+      <div style="font-family:'Jua',sans-serif;font-size:30px;color:#2f4a6d;letter-spacing:-.5px">우비 ☂️</div>
+      <div style="font-size:12.5px;color:#63748c;line-height:1.6;margin-top:6px">비 오기 전에 먼저 알려주는<br>초단기 날씨 알림 앱</div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#8195ad;letter-spacing:.6px;margin-bottom:9px">화면</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ ctrlTabs }}" as="c" hint-placeholder-count="5">
+          <button onClick="{{ c.onClick }}" style="text-align:left;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;font-weight:600;padding:10px 13px;border-radius:12px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;transition:.15s">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#8195ad;letter-spacing:.6px;margin-bottom:9px">상태 (홈 기준)</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ ctrlStates }}" as="c" hint-placeholder-count="6">
+          <button onClick="{{ c.onClick }}" style="text-align:left;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;font-weight:600;padding:10px 13px;border-radius:12px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};cursor:pointer;transition:.15s">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(120,140,165,.25);padding-top:16px">
+      <div style="font-size:11px;font-weight:700;color:#8195ad;letter-spacing:.6px;margin-bottom:10px">알림 배너 신호</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:#4b5c72"><span style="width:15px;height:15px;border-radius:5px;background:#f4a13c;flex:none"></span>🌦 소나기 예정 (강조)</div>
+        <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:#4b5c72"><span style="width:15px;height:15px;border-radius:5px;background:#4a90e2;flex:none"></span>🌧 비 예정</div>
+        <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:#4b5c72"><span style="width:15px;height:15px;border-radius:5px;background:#3aa76d;flex:none"></span>☀️ 알림 없음</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= PHONE ======= -->
+  <div style="width:392px;height:844px;flex:none;border-radius:52px;background:#0e1826;padding:12px;box-shadow:0 40px 80px -24px rgba(30,50,80,.45),0 0 0 2px rgba(255,255,255,.5) inset;position:relative">
+    <div style="position:absolute;top:26px;left:50%;transform:translateX(-50%);width:118px;height:30px;background:#0e1826;border-radius:0 0 18px 18px;z-index:40"></div>
+    <div style="width:100%;height:100%;border-radius:42px;overflow:hidden;position:relative;background:#cdd9e8">
+
+      <!-- sky gradient layer -->
+      <div style="position:absolute;inset:0;background:{{ skyStyle }};transition:background .6s ease"></div>
+
+      <!-- rain overlay -->
+      <sc-if value="{{ showRain }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:5">{{ rainDrops }}</div>
+      </sc-if>
+
+      <!-- STATUS BAR -->
+      <div style="position:relative;z-index:20;height:52px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;color:{{ statusColor }};font-weight:700;font-size:14px">
+        <span style="font-family:'Jua',sans-serif;letter-spacing:.3px">14:47</span>
+        <span style="display:flex;gap:6px;align-items:center;font-size:12px">
+          <span>●●●</span><span>Wi-Fi</span><span style="border:1.5px solid currentColor;border-radius:3px;padding:0 3px;font-size:10px">82</span>
+        </span>
+      </div>
+
+      <!-- SCROLL BODY -->
+      <div style="position:relative;z-index:10;height:708px;overflow-y:auto;-webkit-overflow-scrolling:touch">
+
+        <!-- ===== LOADING ===== -->
+        <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:14px 18px 30px;display:flex;flex-direction:column;gap:16px">
+            <div class="ubi-skel" style="height:22px;width:130px"></div>
+            <div class="ubi-skel" style="height:172px;border-radius:26px"></div>
+            <div class="ubi-skel" style="height:118px;border-radius:24px"></div>
+            <div class="ubi-skel" style="height:18px;width:100px;margin-top:4px"></div>
+            <div style="display:flex;gap:12px">
+              <div class="ubi-skel" style="height:128px;width:78px;border-radius:22px"></div>
+              <div class="ubi-skel" style="height:128px;width:78px;border-radius:22px"></div>
+              <div class="ubi-skel" style="height:128px;width:78px;border-radius:22px"></div>
+              <div class="ubi-skel" style="height:128px;width:78px;border-radius:22px"></div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ===== ERROR ===== -->
+        <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:80px 34px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+            <div style="animation:ubi-bob 3s ease-in-out infinite">{{ sadIcon }}</div>
+            <div style="font-family:'Jua',sans-serif;font-size:22px;color:#33475f">날씨를 불러오지 못했어요</div>
+            <div style="font-size:13.5px;color:#67788f;line-height:1.6">네트워크 연결을 확인한 뒤<br>다시 시도해 주세요.</div>
+            <button style="margin-top:8px;font-family:'Jua',sans-serif;font-size:16px;color:#fff;background:#4a90e2;border:none;padding:13px 30px;border-radius:16px;cursor:pointer;box-shadow:0 8px 18px -6px rgba(74,144,226,.6)">다시 시도</button>
+          </div>
+        </sc-if>
+
+        <!-- ===== LOCATION DENIED ===== -->
+        <sc-if value="{{ isLocDenied }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:64px 30px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:15px">
+            <div style="animation:ubi-bob 3.4s ease-in-out infinite">{{ pinIcon }}</div>
+            <div style="font-family:'Jua',sans-serif;font-size:22px;color:#33475f">위치 권한이 꺼져 있어요</div>
+            <div style="font-size:13.5px;color:#67788f;line-height:1.6">현재 위치 날씨를 보려면 권한이 필요해요.<br>또는 지역을 직접 검색할 수 있어요.</div>
+            <div style="width:100%;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #dbe4ee;border-radius:15px;padding:13px 15px;margin-top:6px;box-shadow:0 6px 16px -10px rgba(60,90,130,.4)">
+              <span style="color:#9aabc0">🔍</span>
+              <span style="font-size:13.5px;color:#9aabc0">동/읍/면으로 검색 (예: 마포구 서교동)</span>
+            </div>
+            <button style="width:100%;font-family:'Jua',sans-serif;font-size:16px;color:#fff;background:#4a90e2;border:none;padding:14px;border-radius:16px;cursor:pointer;box-shadow:0 8px 18px -6px rgba(74,144,226,.6)">📍 위치 권한 다시 요청</button>
+          </div>
+        </sc-if>
+
+        <!-- ===== NORMAL / OFFLINE / PWA TABS ===== -->
+        <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ true }}">
+
+          <!-- offline strip -->
+          <sc-if value="{{ isOffline }}" hint-placeholder-val="{{ false }}">
+            <div style="margin:6px 16px 0;background:#5b6b80;color:#fff;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600">
+              <span style="width:8px;height:8px;border-radius:50%;background:#f4a13c;flex:none"></span>
+              오프라인 · 마지막 업데이트 14:32
+              <span style="margin-left:auto;font-weight:400;opacity:.85">캐시된 정보</span>
+            </div>
+          </sc-if>
+
+          <!-- ========== HOME TAB ========== -->
+          <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:10px 16px 24px;display:flex;flex-direction:column;gap:16px">
+
+              <!-- location header -->
+              <div style="display:flex;align-items:center;justify-content:space-between;color:{{ statusColor }}">
+                <div style="display:flex;align-items:center;gap:5px;font-family:'Jua',sans-serif;font-size:17px;white-space:nowrap">📍 마포구 서교동 <span style="font-size:12px;opacity:.6">▾</span></div>
+                <div style="font-size:12px;opacity:.7;display:flex;align-items:center;gap:5px">⟳ 방금 업데이트</div>
+              </div>
+
+              <!-- ★ ALERT BANNER (killer) -->
+              <div class="ubi-fadeup" style="position:relative;overflow:hidden;background:{{ alertGrad }};border-radius:28px;padding:20px 20px 22px;box-shadow:0 18px 36px -14px {{ alertShadow }};color:#fff">
+                <div style="position:absolute;top:0;left:0;width:60%;height:100%;background:linear-gradient(100deg,rgba(255,255,255,.32),transparent);transform:translateX(-120%);animation:ubi-shine 4.5s ease-in-out infinite"></div>
+                <div style="position:relative;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.3px">
+                  <span style="background:rgba(255,255,255,.28);border-radius:20px;padding:4px 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;animation:ubi-pulse 2.2s infinite">🌦 소나기 예정</span>
+                </div>
+                <div style="position:relative;display:flex;align-items:center;gap:14px;margin-top:14px">
+                  <div style="flex:none;animation:ubi-bob 3.2s ease-in-out infinite">{{ heroIcon }}</div>
+                  <div style="min-width:0">
+                    <div style="font-family:'Jua',sans-serif;font-size:27px;line-height:1.15;letter-spacing:-.3px">오후 3시~4시 30분<br>소나기가 지나가요</div>
+                    <div style="font-size:13.5px;margin-top:8px;opacity:.95;font-weight:500">약 <b style="font-family:'Jua',sans-serif;font-size:16px">13분</b> 뒤 시작 · 우산을 꼭 챙기세요 ☂️</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- current weather -->
+              <div style="background:rgba(255,255,255,.72);backdrop-filter:blur(8px);border-radius:26px;padding:18px 20px;box-shadow:0 10px 26px -16px rgba(50,80,120,.5)">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <div>
+                    <div style="display:flex;align-items:flex-start;gap:2px;color:#2f4762"><span style="font-family:'Jua',sans-serif;font-size:62px;line-height:.9">22</span><span style="font-family:'Jua',sans-serif;font-size:24px;margin-top:6px">°</span></div>
+                    <div style="font-size:14px;color:#5a6d85;font-weight:600;margin-top:2px">흐림 · 곧 비 · 체감 21°</div>
+                  </div>
+                  <div style="animation:ubi-bob 3.6s ease-in-out infinite">{{ curIcon }}</div>
+                </div>
+                <div style="display:flex;gap:9px;margin-top:16px">
+                  <div style="flex:1;background:rgba(255,255,255,.7);border-radius:16px;padding:11px 8px;text-align:center"><div style="font-size:11px;color:#8598ae;font-weight:600">습도</div><div style="font-family:'Jua',sans-serif;font-size:19px;color:#3f5670;margin-top:3px">78%</div></div>
+                  <div style="flex:1;background:rgba(255,255,255,.7);border-radius:16px;padding:11px 8px;text-align:center"><div style="font-size:11px;color:#8598ae;font-weight:600">바람</div><div style="font-family:'Jua',sans-serif;font-size:19px;color:#3f5670;margin-top:3px">2.4㎧</div></div>
+                  <div style="flex:1;background:rgba(255,255,255,.7);border-radius:16px;padding:11px 8px;text-align:center"><div style="font-size:11px;color:#8598ae;font-weight:600">강수확률</div><div style="font-family:'Jua',sans-serif;font-size:19px;color:#3f5670;margin-top:3px">80%</div></div>
+                </div>
+              </div>
+
+              <!-- hourly preview -->
+              <div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin:2px 4px 10px">
+                  <div style="font-family:'Jua',sans-serif;font-size:16px;color:#3a5170">시간별 예보</div>
+                  <button onClick="{{ goHourly }}" style="background:none;border:none;font-size:12.5px;color:#5f7690;font-weight:600;cursor:pointer">6시간 더보기 ›</button>
+                </div>
+                <div style="display:flex;gap:10px;overflow-x:auto;padding:2px 4px 6px">
+                  <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="7">
+                    <div style="flex:none;width:66px;background:{{ t.card }};border:1px solid {{ t.border }};border-radius:20px;padding:12px 6px 11px;text-align:center;box-shadow:0 8px 18px -14px rgba(50,80,120,.5)">
+                      <div style="font-size:12px;font-weight:700;color:{{ t.htext }}">{{ t.h }}</div>
+                      <div style="display:flex;justify-content:center;margin:8px 0 6px">{{ t.icon }}</div>
+                      <div style="font-family:'Jua',sans-serif;font-size:17px;color:#3f5670">{{ t.t }}°</div>
+                      <div style="font-size:11px;color:#4a90e2;font-weight:700;margin-top:4px">💧{{ t.p }}%</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <!-- 3-day -->
+              <div>
+                <div style="font-family:'Jua',sans-serif;font-size:16px;color:#3a5170;margin:2px 4px 10px">오늘 · 내일 · 모레</div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ shortDays }}" as="d" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.66);border-radius:18px;padding:11px 15px">
+                      <div style="width:42px;font-weight:700;font-size:13.5px;color:#465d78">{{ d.d }}</div>
+                      <div style="flex:none">{{ d.icon }}</div>
+                      <div style="font-size:12.5px;color:#5b7690;font-weight:600;flex:1">{{ d.label }}</div>
+                      <div style="font-size:12px;color:#4a90e2;font-weight:700;width:44px;text-align:right">💧{{ d.p }}%</div>
+                      <div style="font-family:'Jua',sans-serif;font-size:14px;color:#98a8bd;width:30px;text-align:right">{{ d.lo }}°</div>
+                      <div style="font-family:'Jua',sans-serif;font-size:14px;color:#3f5670;width:30px;text-align:right">{{ d.hi }}°</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <!-- PWA banner -->
+              <sc-if value="{{ isPwa }}" hint-placeholder-val="{{ false }}">
+                <div class="ubi-fadeup" style="display:flex;align-items:center;gap:12px;background:#2f4a6d;border-radius:22px;padding:14px 16px;color:#fff;box-shadow:0 14px 30px -14px rgba(30,50,80,.6)">
+                  <div style="font-size:28px">☂️</div>
+                  <div style="flex:1"><div style="font-family:'Jua',sans-serif;font-size:15px">홈 화면에 추가하기</div><div style="font-size:12px;opacity:.82;margin-top:2px">앱처럼 빠르게, 알림도 받아요</div></div>
+                  <button style="background:#fff;color:#2f4a6d;border:none;font-family:'Jua',sans-serif;font-size:13px;padding:9px 15px;border-radius:13px;cursor:pointer">설치</button>
+                  <button style="background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;padding:0 2px">×</button>
+                </div>
+              </sc-if>
+
+            </div>
+          </sc-if>
+
+          <!-- ========== HOURLY TAB ========== -->
+          <sc-if value="{{ isHourly }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:12px 16px 24px">
+              <div style="font-family:'Jua',sans-serif;font-size:22px;color:#334a68;margin:4px 4px 4px">6시간 타임라인</div>
+              <div style="font-size:12.5px;color:#5b7690;margin:0 4px 16px">마포구 서교동 · 초단기예보</div>
+              <div style="background:{{ alertGrad }};border-radius:20px;padding:13px 16px;color:#fff;display:flex;align-items:center;gap:10px;margin-bottom:16px;box-shadow:0 12px 26px -14px {{ alertShadow }}">
+                <span style="font-size:22px">🌦</span><div style="font-size:13px;font-weight:600">15시~16시 강수확률이 가장 높아요 (80%)</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="7">
+                  <div style="display:flex;align-items:center;gap:14px;background:{{ t.card }};border:1px solid {{ t.border }};border-radius:20px;padding:12px 16px">
+                    <div style="width:44px;font-weight:700;font-size:13.5px;color:{{ t.htext }}">{{ t.h }}</div>
+                    <div style="flex:none">{{ t.icon }}</div>
+                    <div style="flex:1;font-size:12.5px;color:#5b7690;font-weight:600">{{ t.label }}</div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;width:56px">
+                      <div style="font-size:11px;color:#4a90e2;font-weight:700">💧{{ t.p }}%</div>
+                      <div style="height:5px;width:52px;background:#e3ebf3;border-radius:3px;margin-top:5px;overflow:hidden"><div style="height:100%;width:{{ t.pw }};background:#4a90e2;border-radius:3px"></div></div>
+                    </div>
+                    <div style="font-family:'Jua',sans-serif;font-size:19px;color:#3f5670;width:36px;text-align:right">{{ t.t }}°</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ========== DAILY TAB ========== -->
+          <sc-if value="{{ isDaily }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:12px 16px 24px">
+              <div style="font-family:'Jua',sans-serif;font-size:22px;color:#334a68;margin:4px 4px 16px">주간 예보</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ weekDays }}" as="d" hint-placeholder-count="7">
+                  <div style="display:flex;align-items:center;gap:12px;background:{{ d.card }};border:1px solid {{ d.border }};border-radius:18px;padding:13px 16px">
+                    <div style="width:52px"><div style="font-weight:700;font-size:14px;color:{{ d.dtext }}">{{ d.d }}</div><div style="font-size:11px;color:#9aabc0">{{ d.date }}</div></div>
+                    <div style="flex:none">{{ d.icon }}</div>
+                    <div style="flex:1;font-size:12px;color:#4a90e2;font-weight:700">💧{{ d.p }}%</div>
+                    <div style="display:flex;align-items:center;gap:9px">
+                      <span style="font-family:'Jua',sans-serif;font-size:15px;color:#98a8bd;width:26px;text-align:right">{{ d.lo }}°</span>
+                      <div style="width:64px;height:6px;background:#e3ebf3;border-radius:4px;position:relative;overflow:hidden"><div style="position:absolute;height:100%;left:{{ d.barL }};right:{{ d.barR }};background:linear-gradient(90deg,#7fc8f0,#f4a13c);border-radius:4px"></div></div>
+                      <span style="font-family:'Jua',sans-serif;font-size:15px;color:#3f5670;width:26px">{{ d.hi }}°</span>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ========== RADAR TAB ========== -->
+          <sc-if value="{{ isRadar }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:12px 16px 24px">
+              <div style="font-family:'Jua',sans-serif;font-size:22px;color:#334a68;margin:4px 4px 14px">강수 레이더</div>
+              <div style="position:relative;height:400px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#dbe6f0,#c3d3e2);box-shadow:0 12px 28px -16px rgba(50,80,120,.5)">
+                <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(120,145,175,.18) 0 1px,transparent 1px 34px),repeating-linear-gradient(90deg,rgba(120,145,175,.18) 0 1px,transparent 1px 34px)"></div>
+                <div style="position:absolute;top:44%;left:38%;width:130px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(74,144,226,.72),rgba(74,144,226,0) 70%);animation:ubi-blob 5s ease-in-out infinite"></div>
+                <div style="position:absolute;top:50%;left:46%;width:74px;height:66px;border-radius:50%;background:radial-gradient(circle,rgba(244,161,60,.8),rgba(244,161,60,0) 70%);animation:ubi-blob 5s ease-in-out infinite .6s"></div>
+                <div style="position:absolute;top:54%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #2f4a6d;box-shadow:0 0 0 6px rgba(47,74,109,.15)"></div>
+                <div style="position:absolute;left:50%;top:54%;transform:translate(-50%,-140%);font-size:11px;font-weight:700;color:#2f4a6d;background:#fff;padding:2px 8px;border-radius:8px;white-space:nowrap">내 위치</div>
+                <div style="position:absolute;left:12px;bottom:12px;right:12px;display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border-radius:16px;padding:10px 14px">
+                  <button style="width:36px;height:36px;border-radius:50%;border:none;background:#4a90e2;color:#fff;font-size:14px;cursor:pointer;flex:none">▶</button>
+                  <div style="flex:1"><div style="height:5px;background:#dbe4ee;border-radius:3px;position:relative"><div style="position:absolute;left:0;width:40%;height:100%;background:#4a90e2;border-radius:3px"></div><div style="position:absolute;left:40%;top:50%;width:12px;height:12px;background:#fff;border:2px solid #4a90e2;border-radius:50%;transform:translate(-50%,-50%)"></div></div></div>
+                  <div style="font-family:'Jua',sans-serif;font-size:13px;color:#3f5670;flex:none">15:00</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding:0 4px;font-size:11px;color:#7c8ea3">
+                <span style="font-weight:600">약함</span>
+                <div style="flex:1;height:8px;border-radius:5px;background:linear-gradient(90deg,#bfe0f7,#4a90e2,#f4a13c,#e5533d)"></div>
+                <span style="font-weight:600">강함</span>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- ========== SETTINGS TAB ========== -->
+          <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:12px 16px 24px;display:flex;flex-direction:column;gap:18px">
+              <div style="font-family:'Jua',sans-serif;font-size:22px;color:#334a68;margin:4px 4px 0">설정</div>
+
+              <div>
+                <div style="font-size:12px;font-weight:700;color:#8195ad;margin:0 4px 9px;letter-spacing:.4px">지역</div>
+                <div style="background:rgba(255,255,255,.72);border-radius:20px;padding:6px;box-shadow:0 8px 20px -16px rgba(50,80,120,.5)">
+                  <button style="width:100%;display:flex;align-items:center;gap:10px;background:#4a90e2;color:#fff;border:none;border-radius:15px;padding:13px 15px;font-family:'Jua',sans-serif;font-size:15px;cursor:pointer;margin-bottom:6px">📍 현재 위치로 설정</button>
+                  <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;color:#9aabc0;font-size:13.5px">🔍 동/읍/면 검색</div>
+                  <div style="height:1px;background:#eaf0f6;margin:2px 12px"></div>
+                  <div style="display:flex;align-items:center;gap:10px;padding:12px 14px"><span style="color:#4a90e2">📍</span><span style="font-size:13.5px;font-weight:600;color:#3f5670;flex:1">마포구 서교동</span><span style="font-size:11px;color:#fff;background:#4a90e2;padding:2px 8px;border-radius:8px">현재</span></div>
+                  <div style="display:flex;align-items:center;gap:10px;padding:12px 14px"><span style="color:#9aabc0">☆</span><span style="font-size:13.5px;color:#5b7690;flex:1">강남구 역삼동</span></div>
+                  <div style="display:flex;align-items:center;gap:10px;padding:12px 14px"><span style="color:#9aabc0">☆</span><span style="font-size:13.5px;color:#5b7690;flex:1">부산 해운대구</span></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:12px;font-weight:700;color:#8195ad;margin:0 4px 9px;letter-spacing:.4px">알림</div>
+                <div style="background:rgba(255,255,255,.72);border-radius:20px;overflow:hidden;box-shadow:0 8px 20px -16px rgba(50,80,120,.5)">
+                  <div style="display:flex;align-items:center;gap:12px;padding:15px 16px"><div style="flex:1"><div style="font-size:14px;font-weight:700;color:#3f5670">알림 받기</div><div style="font-size:11.5px;color:#8598ae;margin-top:2px">비 예보 시 푸시 알림</div></div>{{ tgMaster }}</div>
+                  <div style="height:1px;background:#eaf0f6;margin:0 16px"></div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:15px 16px"><span style="font-size:18px">🌦</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#3f5670">소나기 알림</div><div style="font-size:11.5px;color:#8598ae;margin-top:2px">2시간 내 소나기 예상 시</div></div>{{ tgShower }}</div>
+                  <div style="height:1px;background:#eaf0f6;margin:0 16px"></div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:15px 16px"><span style="font-size:18px">🌧</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#3f5670">비 알림</div><div style="font-size:11.5px;color:#8598ae;margin-top:2px">강수확률 60% 이상일 때</div></div>{{ tgRain }}</div>
+                  <div style="height:1px;background:#eaf0f6;margin:0 16px"></div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:15px 16px"><span style="font-size:18px">🌙</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#3f5670">방해금지 시간</div><div style="font-size:11.5px;color:#8598ae;margin-top:2px">22:00 ~ 07:00 알림 끔</div></div>{{ tgDnd }}</div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:12px;font-weight:700;color:#8195ad;margin:0 4px 9px;letter-spacing:.4px">화면</div>
+                <div style="background:rgba(255,255,255,.72);border-radius:20px;overflow:hidden;box-shadow:0 8px 20px -16px rgba(50,80,120,.5)">
+                  <div style="display:flex;align-items:center;gap:12px;padding:15px 16px"><span style="font-size:18px">🌗</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#3f5670">다크 모드</div><div style="font-size:11.5px;color:#8598ae;margin-top:2px">준비 중 · 곧 지원돼요</div></div>{{ tgDark }}</div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+        </sc-if>
+      </div>
+
+      <!-- BOTTOM NAV -->
+      <div style="position:absolute;bottom:0;left:0;right:0;z-index:30;height:84px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-top:1px solid rgba(120,145,175,.16);display:flex;align-items:flex-start;justify-content:space-around;padding:11px 8px 0">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+          <button onClick="{{ n.onClick }}" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:4px 8px;color:{{ n.color }}">
+            {{ n.icon }}
+            <span style="font-size:10.5px;font-weight:700">{{ n.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:920},&quot;alertAccent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;앰버(따뜻)&quot;,&quot;코랄&quot;,&quot;바이올렛&quot;],&quot;default&quot;:&quot;앰버(따뜻)&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;알림 배너&quot;},&quot;rainAnimation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;모션&quot;}}">
+class Component extends DCLogic {
+  state = {
+    tab: 'home',
+    app: 'normal',
+    tg: { master: true, shower: true, rain: true, dnd: false, dark: false }
+  };
+
+  // ---- cute rounded weather icons ----
+  ic(type, size) {
+    const e = React.createElement;
+    const gid = 'sun' + Math.round(size);
+    const defs = e('defs', { key: 'd' },
+      e('radialGradient', { id: gid, cx: '38%', cy: '34%', r: '75%' },
+        e('stop', { offset: '0%', stopColor: '#ffe27a' }),
+        e('stop', { offset: '100%', stopColor: '#ffb43b' })
+      )
+    );
+    const rays = [];
+    for (let i = 0; i < 8; i++) rays.push(e('line', { key: 'r' + i, x1: 32, y1: 5, x2: 32, y2: 12, stroke: '#ffc24a', strokeWidth: 4.4, strokeLinecap: 'round', transform: 'rotate(' + (i * 45) + ' 32 32)' }));
+    const face = (cx, cy, s) => e('g', { key: 'f' },
+      e('circle', { cx: cx - 4 * s, cy: cy, r: 1.7 * s, fill: '#7a5a12' }),
+      e('circle', { cx: cx + 4 * s, cy: cy, r: 1.7 * s, fill: '#7a5a12' }),
+      e('path', { d: 'M' + (cx - 3.4 * s) + ' ' + (cy + 3 * s) + ' q' + (3.4 * s) + ' ' + (3 * s) + ' ' + (6.8 * s) + ' 0', stroke: '#7a5a12', strokeWidth: 1.5 * s, fill: 'none', strokeLinecap: 'round' })
+    );
+    const sun = (big) => e('g', { key: 's' }, rays, e('circle', { cx: 32, cy: 32, r: 14, fill: 'url(#' + gid + ')' }), big ? face(32, 32, 1) : null);
+    const sunSmall = (x, y) => e('circle', { key: 'ss', cx: x, cy: y, r: 9, fill: 'url(#' + gid + ')' });
+    const cloud = (fill, sh, fx) => e('g', { key: 'c' },
+      e('ellipse', { cx: 32, cy: 40, rx: 21, ry: 12, fill: 'rgba(60,90,130,.10)' }),
+      e('circle', { cx: 23, cy: 34, r: 12, fill: fill }),
+      e('circle', { cx: 43, cy: 32, r: 13, fill: fill }),
+      e('circle', { cx: 33, cy: 25, r: 12.5, fill: fill }),
+      e('rect', { x: 12, y: 32, width: 40, height: 15, rx: 7.5, fill: fill }),
+      fx ? e('g', { key: 'ff' },
+        e('circle', { cx: 27, cy: 34, r: 1.7, fill: sh }),
+        e('circle', { cx: 39, cy: 34, r: 1.7, fill: sh }),
+        e('path', { d: 'M29 39 q4 3.4 8 0', stroke: sh, strokeWidth: 1.6, fill: 'none', strokeLinecap: 'round' }),
+        e('circle', { cx: 22, cy: 37, r: 2.4, fill: 'rgba(255,150,150,.35)' }),
+        e('circle', { cx: 44, cy: 36, r: 2.4, fill: 'rgba(255,150,150,.35)' })
+      ) : null
+    );
+    const drops = (color, arr) => arr.map((p, i) => e('circle', { key: 'p' + i, cx: p[0], cy: p[1], r: p[2] || 3, fill: color }));
+    let kids;
+    if (type === 'sunny') kids = [sun(true)];
+    else if (type === 'partly') kids = [sunSmall(46, 20), cloud('#ffffff', '#8aa0bc', size >= 60)];
+    else if (type === 'cloudy') kids = [cloud('#cdd8e6', '#7d90ab', size >= 60)];
+    else if (type === 'rain') kids = [cloud('#c2cfe0', '#7d90ab', size >= 60), ...drops('#4a90e2', [[24, 52, 3], [33, 55, 3.4], [42, 52, 3]])];
+    else if (type === 'shower') kids = [sunSmall(15, 16), cloud('#a9bcd6', '#5b7690', size >= 60), ...drops('#4a90e2', [[24, 52, 3.2], [33, 55, 3.6], [42, 52, 3.2], [33, 60, 3]])];
+    else kids = [cloud('#cdd8e6', '#7d90ab', false)];
+    return e('svg', { width: size, height: size, viewBox: '0 0 64 64', fill: 'none', style: { display: 'block', overflow: 'visible', filter: 'drop-shadow(0 4px 6px rgba(50,80,120,.14))' } }, defs, kids);
+  }
+
+  navIc(type, active) {
+    const e = React.createElement;
+    const p = { fill: 'none', stroke: 'currentColor', strokeWidth: active ? 2.4 : 2, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const paths = {
+      home: 'M4 11 L12 4 L20 11 M6 9.5 V20 H18 V9.5',
+      hourly: 'M12 6 V12 L16 14 M12 21 a9 9 0 1 1 0-18 a9 9 0 0 1 0 18',
+      daily: 'M4 8 H20 M4 8 V19 H20 V8 M4 8 L4 5 H20 V8 M8 4 V7 M16 4 V7 M8 12 H10 M14 12 H16 M8 16 H10 M14 16 H16',
+      radar: 'M12 12 L18 6 M12 21 a9 9 0 1 1 0-18 M12 12 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0 M12 12 a6 6 0 0 1 6 -6',
+      settings: 'M12 15 a3 3 0 1 0 0-6 a3 3 0 0 0 0 6 M12 3 l1 2.2 2.4-.4 .6 2.4 2.2 1.1 -1 2.2 1 2.2 -2.2 1.1 -.6 2.4 -2.4-.4 -1 2.2 -1-2.2 -2.4 .4 -.6-2.4 -2.2-1.1 1-2.2 -1-2.2 2.2-1.1 .6-2.4 2.4 .4 z'
+    };
+    return e('svg', { width: 24, height: 24, viewBox: '0 0 24 24' }, e('path', { d: paths[type], ...p }));
+  }
+
+  toggle(on, fn) {
+    const e = React.createElement;
+    return e('button', { onClick: fn, style: { width: 46, height: 28, borderRadius: 20, border: 'none', cursor: 'pointer', flex: 'none', padding: 3, background: on ? '#3aa76d' : '#c8d3e0', transition: '.2s', display: 'flex', justifyContent: on ? 'flex-end' : 'flex-start' } },
+      e('span', { style: { width: 22, height: 22, borderRadius: '50%', background: '#fff', display: 'block', boxShadow: '0 2px 4px rgba(0,0,0,.2)', transition: '.2s' } }));
+  }
+
+  renderVals() {
+    const S = this.state;
+    const app = S.app, tab = S.tab;
+    const showTabs = app === 'normal' || app === 'offline' || app === 'pwa';
+
+    const sky = {
+      home: 'linear-gradient(180deg,#8ba6c8 0%,#aec3dc 42%,#dbe6f0 100%)',
+      hourly: 'linear-gradient(180deg,#8ba6c8 0%,#aec3dc 42%,#dbe6f0 100%)',
+      daily: 'linear-gradient(180deg,#8ecbf2 0%,#bfe2f8 45%,#eaf6ff 100%)',
+      radar: 'linear-gradient(180deg,#6a7f9c 0%,#8ba0bb 55%,#c3d3e2 100%)',
+      settings: 'linear-gradient(180deg,#c9d6e4 0%,#dde7f0 50%,#eef3f8 100%)'
+    };
+    let skyStyle = sky[tab] || sky.home;
+    if (app === 'error' || app === 'locDenied' || app === 'loading') skyStyle = 'linear-gradient(180deg,#dbe6f0,#eef3f8)';
+
+    const alertAccent = this.props.alertAccent || '앰버(따뜻)';
+    const accents = {
+      '앰버(따뜻)': { grad: 'linear-gradient(135deg,#f9a94a,#f4832f)', sh: 'rgba(244,131,47,.55)' },
+      '코랄': { grad: 'linear-gradient(135deg,#ff8a6b,#f2624a)', sh: 'rgba(242,98,74,.55)' },
+      '바이올렛': { grad: 'linear-gradient(135deg,#8b7cf0,#6a54d8)', sh: 'rgba(106,84,216,.55)' }
+    };
+    const acc = accents[alertAccent] || accents['앰버(따뜻)'];
+
+    const rainOn = this.props.rainAnimation !== false;
+    const showRain = rainOn && showTabs && (tab === 'home' || tab === 'hourly');
+    const rainDrops = [];
+    if (showRain) for (let i = 0; i < 26; i++) rainDrops.push(React.createElement('span', { key: i, style: { position: 'absolute', top: '-4%', left: ((i * 3.9) % 100) + '%', width: 2, height: 13, borderRadius: 2, background: 'rgba(255,255,255,.55)', animation: 'ubi-rainfall ' + (0.75 + (i % 5) * 0.12) + 's linear ' + ((i % 7) * 0.13) + 's infinite' } }));
+
+    // timeline
+    const tlRaw = [
+      { h: '지금', t: 22, p: 60, c: 'cloudy', label: '흐림' },
+      { h: '15시', t: 21, p: 80, c: 'shower', label: '소나기' },
+      { h: '16시', t: 20, p: 75, c: 'shower', label: '소나기' },
+      { h: '17시', t: 20, p: 55, c: 'rain', label: '약한 비' },
+      { h: '18시', t: 21, p: 30, c: 'cloudy', label: '흐림' },
+      { h: '19시', t: 22, p: 10, c: 'partly', label: '구름 조금' },
+      { h: '20시', t: 21, p: 5, c: 'partly', label: '대체로 맑음' }
+    ];
+    const timeline = tlRaw.map(x => {
+      const hi = x.c === 'shower';
+      return { ...x, icon: this.ic(x.c, 34), pw: x.p + '%', card: hi ? 'rgba(255,255,255,.92)' : 'rgba(255,255,255,.62)', border: hi ? '#f7c68a' : 'rgba(255,255,255,.5)', htext: hi ? '#e6892a' : '#5b7690' };
+    });
+
+    const shortDays = [
+      { d: '오늘', c: 'shower', label: '소나기', p: 80, lo: 19, hi: 23 },
+      { d: '내일', c: 'cloudy', label: '흐림', p: 30, lo: 18, hi: 24 },
+      { d: '모레', c: 'sunny', label: '맑음', p: 0, lo: 20, hi: 27 }
+    ].map(x => ({ ...x, icon: this.ic(x.c, 32) }));
+
+    // week
+    const wkRaw = [
+      { d: '오늘', date: '7/8', c: 'shower', p: 80, lo: 19, hi: 23 },
+      { d: '내일', date: '7/9', c: 'cloudy', p: 30, lo: 18, hi: 24 },
+      { d: '모레', date: '7/10', c: 'sunny', p: 0, lo: 20, hi: 27 },
+      { d: '금', date: '7/11', c: 'sunny', p: 5, lo: 21, hi: 29 },
+      { d: '토', date: '7/12', c: 'partly', p: 20, lo: 22, hi: 30 },
+      { d: '일', date: '7/13', c: 'rain', p: 65, lo: 21, hi: 26 },
+      { d: '월', date: '7/14', c: 'shower', p: 70, lo: 20, hi: 25 }
+    ];
+    const lows = wkRaw.map(x => x.lo), his = wkRaw.map(x => x.hi);
+    const mn = Math.min(...lows), mx = Math.max(...his), span = mx - mn;
+    const weekDays = wkRaw.map((x, i) => ({
+      ...x,
+      icon: this.ic(x.c, 30),
+      card: i === 0 ? 'rgba(255,255,255,.9)' : 'rgba(255,255,255,.6)',
+      border: i === 0 ? '#f7c68a' : 'rgba(255,255,255,.5)',
+      dtext: i === 0 ? '#e6892a' : '#3f5670',
+      barL: Math.round(((x.lo - mn) / span) * 100) + '%',
+      barR: Math.round(((mx - x.hi) / span) * 100) + '%'
+    }));
+
+    const mkCtrl = (id, label, activeVal, fn) => {
+      const on = activeVal;
+      return { label, onClick: fn, bg: on ? '#2f4a6d' : '#ffffff', color: on ? '#ffffff' : '#4b5c72', border: on ? '#2f4a6d' : 'rgba(120,140,165,.3)' };
+    };
+    const setTab = (t) => this.setState({ tab: t, app: (this.state.app === 'error' || this.state.app === 'locDenied' || this.state.app === 'loading') ? 'normal' : this.state.app });
+    const ctrlTabs = [
+      mkCtrl('home', '🏠 홈', tab === 'home', () => setTab('home')),
+      mkCtrl('hourly', '🕒 시간별', tab === 'hourly', () => setTab('hourly')),
+      mkCtrl('daily', '📅 일별', tab === 'daily', () => setTab('daily')),
+      mkCtrl('radar', '📡 레이더', tab === 'radar', () => setTab('radar')),
+      mkCtrl('settings', '⚙️ 설정', tab === 'settings', () => setTab('settings'))
+    ];
+    const ctrlStates = [
+      mkCtrl('normal', '☀️ 정상', app === 'normal', () => this.setState({ app: 'normal', tab: 'home' })),
+      mkCtrl('loading', '⏳ 로딩', app === 'loading', () => this.setState({ app: 'loading', tab: 'home' })),
+      mkCtrl('offline', '📶 오프라인', app === 'offline', () => this.setState({ app: 'offline', tab: 'home' })),
+      mkCtrl('error', '⚠️ 에러', app === 'error', () => this.setState({ app: 'error', tab: 'home' })),
+      mkCtrl('locDenied', '📍 위치 거부', app === 'locDenied', () => this.setState({ app: 'locDenied', tab: 'home' })),
+      mkCtrl('pwa', '⬇️ PWA 설치', app === 'pwa', () => this.setState({ app: 'pwa', tab: 'home' }))
+    ];
+
+    const navDef = [
+      { id: 'home', label: '홈' }, { id: 'hourly', label: '시간별' }, { id: 'daily', label: '일별' }, { id: 'radar', label: '레이더' }, { id: 'settings', label: '설정' }
+    ];
+    const navItems = navDef.map(n => ({ label: n.label, icon: this.navIc(n.id, tab === n.id), color: tab === n.id ? '#2f4a6d' : '#9aabc0', onClick: () => setTab(n.id) }));
+
+    const tg = S.tg;
+    const setTg = (k) => this.setState(s => ({ tg: { ...s.tg, [k]: !s.tg[k] } }));
+
+    return {
+      skyStyle, showRain, rainDrops, alertGrad: acc.grad, alertShadow: acc.sh,
+      statusColor: (tab === 'radar' && showTabs) ? '#eef3f8' : '#2f4762',
+      showTabs, isHome: tab === 'home' && showTabs, isHourly: tab === 'hourly' && showTabs,
+      isDaily: tab === 'daily' && showTabs, isRadar: tab === 'radar' && showTabs, isSettings: tab === 'settings' && showTabs,
+      isLoading: app === 'loading', isError: app === 'error', isLocDenied: app === 'locDenied',
+      isOffline: app === 'offline', isPwa: app === 'pwa',
+      heroIcon: this.ic('shower', 76), curIcon: this.ic('cloudy', 66),
+      sadIcon: this.ic('rain', 96), pinIcon: React.createElement('div', { style: { fontSize: 76 } }, '📍'),
+      timeline, shortDays, weekDays, ctrlTabs, ctrlStates, navItems,
+      goHourly: () => setTab('hourly'),
+      tgMaster: this.toggle(tg.master, () => setTg('master')),
+      tgShower: this.toggle(tg.shower, () => setTg('shower')),
+      tgRain: this.toggle(tg.rain, () => setTg('rain')),
+      tgDnd: this.toggle(tg.dnd, () => setTg('dnd')),
+      tgDark: this.toggle(tg.dark, () => setTg('dark'))
+    };
+  }
+}
+</script>
+</body>
+</html>

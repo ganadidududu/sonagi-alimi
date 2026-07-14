@@ -1,0 +1,12 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Each device signs in anonymously and owns exactly one doc, keyed by
+    // its own auth uid — no shared user accounts, matching the PRD's
+    // "no login, per-device anonymous subscription" decision.
+    match /devices/{deviceId} {
+      allow read, write: if request.auth != null && request.auth.uid == deviceId;
+    }
+  }
+}

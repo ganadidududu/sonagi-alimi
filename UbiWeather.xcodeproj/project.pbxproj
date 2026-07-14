@@ -1,0 +1,863 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01C035EF275BB416F74C1DC1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2D185185BC00621AF4794D /* HomeView.swift */; };
+		021C8D51870189E4A7A62B65 /* ThreeDaySummarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FDC8A1E58484039D9A18E /* ThreeDaySummarySection.swift */; };
+		096BC569874ABD7B1C0DB5BE /* LockScreenWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA132B5D23CC7C848DE024A /* LockScreenWidgetView.swift */; };
+		0C5FD2B99B6285619F4BCB55 /* BackgroundRefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */; };
+		0F34FE5B5115401C5903EEBF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9C1EF6632FCF4B765A14DF /* FirebaseMessaging */; };
+		0F505E085D71A158016BACAE /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0833860DAC2EB25F505378 /* WeatherIconView.swift */; };
+		13123CCA7B1E83BF5606364E /* UbiWeatherWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7AA187BA6D737A133190AFCC /* UbiWeatherWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		196E5B31E66B5BC799FAE2B3 /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB4EEFF3DFD1DE5E18DEB2 /* WeatherModels.swift */; };
+		1B54A616B088931CD9D758DE /* UbiToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015EF10DEF732E73AF4049C7 /* UbiToggle.swift */; };
+		1CB2CEA181EE16FCFD3360BE /* FirebaseBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */; };
+		2B9707A4E58177B829BB54E2 /* WidgetSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20873F82AC990E8E7966E43 /* WidgetSharedData.swift */; };
+		2C1F09100C76ACF75591DCFB /* KMAParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13D673C5395209987669E8B /* KMAParsingTests.swift */; };
+		36572A6E16F7690D7CD4C482 /* UbiGradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */; };
+		386BB1F806EED6D08980EBE1 /* AlertBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299252545434315019DC7B65 /* AlertBannerView.swift */; };
+		40120866D8A709B374DD75E5 /* Shimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB0BCF60117EAA3C124FF43 /* Shimmer.swift */; };
+		44D96003F743C04011A76E22 /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB4EEFF3DFD1DE5E18DEB2 /* WeatherModels.swift */; };
+		47A657A94A24F0CA73B3FF8A /* KMABaseTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */; };
+		4CCFABEF13E4937202CDA780 /* UbiWeatherWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40773B052F8FA1B4F3B7D6C5 /* UbiWeatherWidgetBundle.swift */; };
+		4F19CD5DE11AC22972A0BCE9 /* UbiWeatherLockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */; };
+		52C5DF53A2F04E5B9C820F73 /* StatusScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */; };
+		53C2C8E174406048AEFB1DB2 /* RadarModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD417E995D96DD0DE61EE2B5 /* RadarModels.swift */; };
+		5D17BE95C1F3D9404166C3C1 /* GridConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */; };
+		69D9E40B0167C936E959ADA9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F084A522FDAA380B4425AAE8 /* GoogleService-Info.plist */; };
+		6BFB5A47EF3026D8107FD5E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CAB06456C2997065F87C41 /* ContentView.swift */; };
+		703027DB2A69DBC23705C9FC /* WidgetSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20873F82AC990E8E7966E43 /* WidgetSharedData.swift */; };
+		72929D518A3D010D5F828CEF /* KMAAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDAC949915D84F93FC2D856 /* KMAAPIClient.swift */; };
+		72C9F58B6546FAA770686397 /* KMAModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473ADF95C7460D2F89425D84 /* KMAModelsTests.swift */; };
+		79F448B27D20810D321B3D97 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BF308A026B09D0DF721267 /* NotificationService.swift */; };
+		7BA01BF0BBE3891A31AAFCF5 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6E6DA34CB92D47AC42ACE /* Secrets.swift */; };
+		82CF59FDFC1895585395700D /* UbiWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B23B74A92ABCC415FB81A8F /* UbiWeatherApp.swift */; };
+		85E4FDD6A321369700EE8E9A /* HourlyPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */; };
+		8737882DEA2107EA4BD1067D /* CurrentWeatherCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BFBBD50A5C63F16D70EEE /* CurrentWeatherCardView.swift */; };
+		8BF0ADB4B650951BAE100887 /* KMAModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B281FD2A061C3B5360951CFE /* KMAModels.swift */; };
+		8FC5DEF5880E5EA1D523BACE /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBF2C912270C754631B976 /* LocationService.swift */; };
+		910BB29BA308B303640FEF7B /* GridConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6BB2DE3F3EFC78E253CCC6 /* GridConverter.swift */; };
+		95FC241B8611141D1A4C08E9 /* PushRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9AEE5A923C87DA32D597FB /* PushRegistrationService.swift */; };
+		9BF07CEBF752DDD45C1FF337 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DBFAAEEF35E1191D8D8A97 /* DailyView.swift */; };
+		9CA0092E74E2D871146AD515 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE501F586A44EACCB0E234B7 /* SettingsView.swift */; };
+		A4EF0F4DA34C69DEE1EC6AE4 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D3042BE0A3B74E3EB9EBA /* WeatherViewModel.swift */; };
+		A7B404C677515E11BFCB3B86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AB1200DF94031065A200F1B /* Assets.xcassets */; };
+		AC51BAB0015B179819DB524E /* UbiColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908C668FCF02C266664A565F /* UbiColors.swift */; };
+		AE3CFDF93380E8A4DDC6E4CC /* KMAParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDB235749B037D1AC59CB5C /* KMAParsing.swift */; };
+		B07312ACBECF84F559A1661F /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C639688A3940C1F8B531520 /* RadarView.swift */; };
+		B4FE027FAD8E2555971FAD86 /* WidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7C371B4E5DCB499ECDB603 /* WidgetEntry.swift */; };
+		B8B10EE882DF1FE194E2D7CA /* UbiTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFB491614F6BC661B414A0B /* UbiTypography.swift */; };
+		B9152A457C316C9B1F410018 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085CC07A2FC12282ADA75EC0 /* NotificationPreferences.swift */; };
+		BA7AB22D88E7230BD4DAD8BF /* RainOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4DE5164BB2B46B84867ED /* RainOverlayView.swift */; };
+		BDB2A4A8AC942A7405D79539 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C8CFF35905BAB2FBF0CB9A94 /* FirebaseFirestore */; };
+		C4224649C91F5232E54E6BF0 /* UbiGradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */; };
+		C563A0E7E7CD8ACDECBAB567 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0089A9B532DD4D6B8F878F9B /* FirebaseAuth */; };
+		C81EFE27B0DB3116EFC9C678 /* NotificationPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F24E23078B94164B2A880 /* NotificationPreferencesTests.swift */; };
+		CB21214C960E27D80C3F4C28 /* WeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD745D18338B306CBE6E732 /* WeatherRepository.swift */; };
+		D03319EFB0404A1636A5CD70 /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0833860DAC2EB25F505378 /* WeatherIconView.swift */; };
+		D40C9C3CBB0C1CC095E45126 /* KMABaseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */; };
+		D4B92D5B27D9E5B1CFC83075 /* RadarAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B47F641AD918D6807C849F8 /* RadarAPIClient.swift */; };
+		DAD6531DBF7E9333873FD51E /* UbiWeatherLockScreenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AB3BE51AEE2D182B588477 /* UbiWeatherLockScreenWidget.swift */; };
+		F56368DF1769CE0140D08DE3 /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E769E42C5A3B3C240D386C /* HourlyView.swift */; };
+		F8148518D953BF5EF5C347D7 /* Jua-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81F5E3AB53661B80EE8A57A4 /* Jua-Regular.ttf */; };
+		FFB1DFAF02D872A54F1C4155 /* UbiColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908C668FCF02C266664A565F /* UbiColors.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		59BD5E64B734224F1E305825 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 912CB0E7A5B129EAB14F87E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99010CCAE2138EAA0ED8E352;
+			remoteInfo = UbiWeatherWidgetExtension;
+		};
+		7544A1D890F814DD70459339 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 912CB0E7A5B129EAB14F87E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1596E87468CE021F112CAD8A;
+			remoteInfo = UbiWeather;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B12C8F515BDDD991279BFC62 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				13123CCA7B1E83BF5606364E /* UbiWeatherWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		015EF10DEF732E73AF4049C7 /* UbiToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiToggle.swift; sourceTree = "<group>"; };
+		02F4DE5164BB2B46B84867ED /* RainOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainOverlayView.swift; sourceTree = "<group>"; };
+		085CC07A2FC12282ADA75EC0 /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
+		09AB3BE51AEE2D182B588477 /* UbiWeatherLockScreenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiWeatherLockScreenWidget.swift; sourceTree = "<group>"; };
+		0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusScreens.swift; sourceTree = "<group>"; };
+		0FCA2E0B64E11347E6160394 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0FF71E699D1763A520A9D621 /* UbiWeather.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = UbiWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMABaseTimeTests.swift; sourceTree = "<group>"; };
+		1FFB4EEFF3DFD1DE5E18DEB2 /* WeatherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModels.swift; sourceTree = "<group>"; };
+		226AF3A07CD0CCD1A7EF8E30 /* UbiWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UbiWeather.entitlements; sourceTree = "<group>"; };
+		299252545434315019DC7B65 /* AlertBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBannerView.swift; sourceTree = "<group>"; };
+		31E769E42C5A3B3C240D386C /* HourlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
+		3CDAC949915D84F93FC2D856 /* KMAAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAAPIClient.swift; sourceTree = "<group>"; };
+		40773B052F8FA1B4F3B7D6C5 /* UbiWeatherWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiWeatherWidgetBundle.swift; sourceTree = "<group>"; };
+		473ADF95C7460D2F89425D84 /* KMAModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAModelsTests.swift; sourceTree = "<group>"; };
+		496BFBBD50A5C63F16D70EEE /* CurrentWeatherCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCardView.swift; sourceTree = "<group>"; };
+		4B23B74A92ABCC415FB81A8F /* UbiWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiWeatherApp.swift; sourceTree = "<group>"; };
+		4BFB491614F6BC661B414A0B /* UbiTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiTypography.swift; sourceTree = "<group>"; };
+		4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyPreviewSection.swift; sourceTree = "<group>"; };
+		4C639688A3940C1F8B531520 /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
+		56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiGradients.swift; sourceTree = "<group>"; };
+		5ABBF2C912270C754631B976 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		678102CC210674996C88C688 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
+		6F1D3042BE0A3B74E3EB9EBA /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		7AA187BA6D737A133190AFCC /* UbiWeatherWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = UbiWeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DB0BCF60117EAA3C124FF43 /* Shimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shimmer.swift; sourceTree = "<group>"; };
+		7FDB235749B037D1AC59CB5C /* KMAParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAParsing.swift; sourceTree = "<group>"; };
+		81F5E3AB53661B80EE8A57A4 /* Jua-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jua-Regular.ttf"; sourceTree = "<group>"; };
+		85BF308A026B09D0DF721267 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		8AB1200DF94031065A200F1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8B47F641AD918D6807C849F8 /* RadarAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarAPIClient.swift; sourceTree = "<group>"; };
+		8FD745D18338B306CBE6E732 /* WeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRepository.swift; sourceTree = "<group>"; };
+		908C668FCF02C266664A565F /* UbiColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiColors.swift; sourceTree = "<group>"; };
+		94A6E6DA34CB92D47AC42ACE /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		962FDC8A1E58484039D9A18E /* ThreeDaySummarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDaySummarySection.swift; sourceTree = "<group>"; };
+		9B6BB2DE3F3EFC78E253CCC6 /* GridConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridConverter.swift; sourceTree = "<group>"; };
+		A153FE662CC10D35BAA0B36D /* UbiWeatherTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = UbiWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridConverterTests.swift; sourceTree = "<group>"; };
+		AD417E995D96DD0DE61EE2B5 /* RadarModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarModels.swift; sourceTree = "<group>"; };
+		B13D673C5395209987669E8B /* KMAParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAParsingTests.swift; sourceTree = "<group>"; };
+		B1B8C7E7BD76D25DA07903DC /* UbiWeatherWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UbiWeatherWidget.entitlements; sourceTree = "<group>"; };
+		B20873F82AC990E8E7966E43 /* WidgetSharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSharedData.swift; sourceTree = "<group>"; };
+		B281FD2A061C3B5360951CFE /* KMAModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAModels.swift; sourceTree = "<group>"; };
+		B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshManager.swift; sourceTree = "<group>"; };
+		BAA132B5D23CC7C848DE024A /* LockScreenWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenWidgetView.swift; sourceTree = "<group>"; };
+		CE0833860DAC2EB25F505378 /* WeatherIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconView.swift; sourceTree = "<group>"; };
+		CE501F586A44EACCB0E234B7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		CF7C371B4E5DCB499ECDB603 /* WidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntry.swift; sourceTree = "<group>"; };
+		D3DBFAAEEF35E1191D8D8A97 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
+		D49F24E23078B94164B2A880 /* NotificationPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferencesTests.swift; sourceTree = "<group>"; };
+		DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiWeatherLockScreenProvider.swift; sourceTree = "<group>"; };
+		DD2D185185BC00621AF4794D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		E7CAB06456C2997065F87C41 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EB9AEE5A923C87DA32D597FB /* PushRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistrationService.swift; sourceTree = "<group>"; };
+		F084A522FDAA380B4425AAE8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMABaseTime.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5918F1E4109639F9F30F46A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0F34FE5B5115401C5903EEBF /* FirebaseMessaging in Frameworks */,
+				BDB2A4A8AC942A7405D79539 /* FirebaseFirestore in Frameworks */,
+				C563A0E7E7CD8ACDECBAB567 /* FirebaseAuth in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1BA4E8B3ABF7D3E37CA2BC12 /* UbiWeatherWidget */ = {
+			isa = PBXGroup;
+			children = (
+				678102CC210674996C88C688 /* Info.plist */,
+				BAA132B5D23CC7C848DE024A /* LockScreenWidgetView.swift */,
+				DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */,
+				09AB3BE51AEE2D182B588477 /* UbiWeatherLockScreenWidget.swift */,
+				B1B8C7E7BD76D25DA07903DC /* UbiWeatherWidget.entitlements */,
+				40773B052F8FA1B4F3B7D6C5 /* UbiWeatherWidgetBundle.swift */,
+				CF7C371B4E5DCB499ECDB603 /* WidgetEntry.swift */,
+			);
+			path = UbiWeatherWidget;
+			sourceTree = "<group>";
+		};
+		25D3E4DCC8BC137317A3C022 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				94A6E6DA34CB92D47AC42ACE /* Secrets.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		2B45B70BF269D53EB5B099C2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8AB1200DF94031065A200F1B /* Assets.xcassets */,
+				837F59D4725E998D899B4D06 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2BE9BB43379D6FFE69F51A16 /* UbiWeatherTests */ = {
+			isa = PBXGroup;
+			children = (
+				A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */,
+				1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */,
+				473ADF95C7460D2F89425D84 /* KMAModelsTests.swift */,
+				B13D673C5395209987669E8B /* KMAParsingTests.swift */,
+				D49F24E23078B94164B2A880 /* NotificationPreferencesTests.swift */,
+			);
+			path = UbiWeatherTests;
+			sourceTree = "<group>";
+		};
+		837F59D4725E998D899B4D06 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				81F5E3AB53661B80EE8A57A4 /* Jua-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		9160F762B95EF7A28EBA0D45 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D3DBFAAEEF35E1191D8D8A97 /* DailyView.swift */,
+				DD2D185185BC00621AF4794D /* HomeView.swift */,
+				31E769E42C5A3B3C240D386C /* HourlyView.swift */,
+				4C639688A3940C1F8B531520 /* RadarView.swift */,
+				CE501F586A44EACCB0E234B7 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		94D2E45072571F2906FD6895 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1FFB4EEFF3DFD1DE5E18DEB2 /* WeatherModels.swift */,
+				6F1D3042BE0A3B74E3EB9EBA /* WeatherViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B71A49E8F6479DB0C0C680A3 = {
+			isa = PBXGroup;
+			children = (
+				E77726F9BC57D31C15A5A0A3 /* UbiWeather */,
+				2BE9BB43379D6FFE69F51A16 /* UbiWeatherTests */,
+				1BA4E8B3ABF7D3E37CA2BC12 /* UbiWeatherWidget */,
+				CC254CA197ECCCEEAA78119C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C1926AE876ECC92E4E60A80A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				299252545434315019DC7B65 /* AlertBannerView.swift */,
+				496BFBBD50A5C63F16D70EEE /* CurrentWeatherCardView.swift */,
+				4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */,
+				02F4DE5164BB2B46B84867ED /* RainOverlayView.swift */,
+				7DB0BCF60117EAA3C124FF43 /* Shimmer.swift */,
+				0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */,
+				962FDC8A1E58484039D9A18E /* ThreeDaySummarySection.swift */,
+				015EF10DEF732E73AF4049C7 /* UbiToggle.swift */,
+				CE0833860DAC2EB25F505378 /* WeatherIconView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C6B4136CF0BEA28B38F5ECC4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B20873F82AC990E8E7966E43 /* WidgetSharedData.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		CC254CA197ECCCEEAA78119C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0FF71E699D1763A520A9D621 /* UbiWeather.app */,
+				A153FE662CC10D35BAA0B36D /* UbiWeatherTests.xctest */,
+				7AA187BA6D737A133190AFCC /* UbiWeatherWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6815B63E96FF26A33C06928 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */,
+				6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */,
+				9B6BB2DE3F3EFC78E253CCC6 /* GridConverter.swift */,
+				3CDAC949915D84F93FC2D856 /* KMAAPIClient.swift */,
+				F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */,
+				B281FD2A061C3B5360951CFE /* KMAModels.swift */,
+				7FDB235749B037D1AC59CB5C /* KMAParsing.swift */,
+				5ABBF2C912270C754631B976 /* LocationService.swift */,
+				085CC07A2FC12282ADA75EC0 /* NotificationPreferences.swift */,
+				85BF308A026B09D0DF721267 /* NotificationService.swift */,
+				EB9AEE5A923C87DA32D597FB /* PushRegistrationService.swift */,
+				8B47F641AD918D6807C849F8 /* RadarAPIClient.swift */,
+				AD417E995D96DD0DE61EE2B5 /* RadarModels.swift */,
+				8FD745D18338B306CBE6E732 /* WeatherRepository.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E77726F9BC57D31C15A5A0A3 /* UbiWeather */ = {
+			isa = PBXGroup;
+			children = (
+				F084A522FDAA380B4425AAE8 /* GoogleService-Info.plist */,
+				0FCA2E0B64E11347E6160394 /* Info.plist */,
+				226AF3A07CD0CCD1A7EF8E30 /* UbiWeather.entitlements */,
+				F338B943E78E51502B9DACD5 /* App */,
+				C1926AE876ECC92E4E60A80A /* Components */,
+				25D3E4DCC8BC137317A3C022 /* Config */,
+				FB492DAE6973C6FB955D0159 /* Design */,
+				94D2E45072571F2906FD6895 /* Models */,
+				2B45B70BF269D53EB5B099C2 /* Resources */,
+				E6815B63E96FF26A33C06928 /* Services */,
+				C6B4136CF0BEA28B38F5ECC4 /* Shared */,
+				9160F762B95EF7A28EBA0D45 /* Views */,
+			);
+			path = UbiWeather;
+			sourceTree = "<group>";
+		};
+		F338B943E78E51502B9DACD5 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E7CAB06456C2997065F87C41 /* ContentView.swift */,
+				4B23B74A92ABCC415FB81A8F /* UbiWeatherApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		FB492DAE6973C6FB955D0159 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				908C668FCF02C266664A565F /* UbiColors.swift */,
+				56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */,
+				4BFB491614F6BC661B414A0B /* UbiTypography.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1596E87468CE021F112CAD8A /* UbiWeather */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAD5853F420EE74F487C41F1 /* Build configuration list for PBXNativeTarget "UbiWeather" */;
+			buildPhases = (
+				DF39243016FE1DD8DC554823 /* Sources */,
+				00687DADD7DDFEB84799A60B /* Resources */,
+				5918F1E4109639F9F30F46A1 /* Frameworks */,
+				B12C8F515BDDD991279BFC62 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9B874755134BB5E71DCF1A83 /* PBXTargetDependency */,
+			);
+			name = UbiWeather;
+			packageProductDependencies = (
+				5A9C1EF6632FCF4B765A14DF /* FirebaseMessaging */,
+				C8CFF35905BAB2FBF0CB9A94 /* FirebaseFirestore */,
+				0089A9B532DD4D6B8F878F9B /* FirebaseAuth */,
+			);
+			productName = UbiWeather;
+			productReference = 0FF71E699D1763A520A9D621 /* UbiWeather.app */;
+			productType = "com.apple.product-type.application";
+		};
+		589BBF89931E785D4812A5E4 /* UbiWeatherTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56407089A9BD3F4A7F7AD77B /* Build configuration list for PBXNativeTarget "UbiWeatherTests" */;
+			buildPhases = (
+				2F4369F751C476EE7AAAC889 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7CA042A3E6032B99903C4ACB /* PBXTargetDependency */,
+			);
+			name = UbiWeatherTests;
+			packageProductDependencies = (
+			);
+			productName = UbiWeatherTests;
+			productReference = A153FE662CC10D35BAA0B36D /* UbiWeatherTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		99010CCAE2138EAA0ED8E352 /* UbiWeatherWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6E29879F780DA4B59EDC048 /* Build configuration list for PBXNativeTarget "UbiWeatherWidgetExtension" */;
+			buildPhases = (
+				1DCE21DBA25E44FCE9C871A7 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UbiWeatherWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = UbiWeatherWidgetExtension;
+			productReference = 7AA187BA6D737A133190AFCC /* UbiWeatherWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		912CB0E7A5B129EAB14F87E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1596E87468CE021F112CAD8A = {
+						DevelopmentTeam = 87V7WR9QND;
+					};
+					99010CCAE2138EAA0ED8E352 = {
+						DevelopmentTeam = 87V7WR9QND;
+					};
+				};
+			};
+			buildConfigurationList = 3FD5E51313AEACD28B62F1BE /* Build configuration list for PBXProject "UbiWeather" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B71A49E8F6479DB0C0C680A3;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CC9103BFEACBFDFDE2C890BA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CC254CA197ECCCEEAA78119C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1596E87468CE021F112CAD8A /* UbiWeather */,
+				589BBF89931E785D4812A5E4 /* UbiWeatherTests */,
+				99010CCAE2138EAA0ED8E352 /* UbiWeatherWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00687DADD7DDFEB84799A60B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7B404C677515E11BFCB3B86 /* Assets.xcassets in Resources */,
+				69D9E40B0167C936E959ADA9 /* GoogleService-Info.plist in Resources */,
+				F8148518D953BF5EF5C347D7 /* Jua-Regular.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1DCE21DBA25E44FCE9C871A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				096BC569874ABD7B1C0DB5BE /* LockScreenWidgetView.swift in Sources */,
+				AC51BAB0015B179819DB524E /* UbiColors.swift in Sources */,
+				36572A6E16F7690D7CD4C482 /* UbiGradients.swift in Sources */,
+				4F19CD5DE11AC22972A0BCE9 /* UbiWeatherLockScreenProvider.swift in Sources */,
+				DAD6531DBF7E9333873FD51E /* UbiWeatherLockScreenWidget.swift in Sources */,
+				4CCFABEF13E4937202CDA780 /* UbiWeatherWidgetBundle.swift in Sources */,
+				0F505E085D71A158016BACAE /* WeatherIconView.swift in Sources */,
+				196E5B31E66B5BC799FAE2B3 /* WeatherModels.swift in Sources */,
+				B4FE027FAD8E2555971FAD86 /* WidgetEntry.swift in Sources */,
+				703027DB2A69DBC23705C9FC /* WidgetSharedData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F4369F751C476EE7AAAC889 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D17BE95C1F3D9404166C3C1 /* GridConverterTests.swift in Sources */,
+				47A657A94A24F0CA73B3FF8A /* KMABaseTimeTests.swift in Sources */,
+				72C9F58B6546FAA770686397 /* KMAModelsTests.swift in Sources */,
+				2C1F09100C76ACF75591DCFB /* KMAParsingTests.swift in Sources */,
+				C81EFE27B0DB3116EFC9C678 /* NotificationPreferencesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DF39243016FE1DD8DC554823 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				386BB1F806EED6D08980EBE1 /* AlertBannerView.swift in Sources */,
+				0C5FD2B99B6285619F4BCB55 /* BackgroundRefreshManager.swift in Sources */,
+				6BFB5A47EF3026D8107FD5E5 /* ContentView.swift in Sources */,
+				8737882DEA2107EA4BD1067D /* CurrentWeatherCardView.swift in Sources */,
+				9BF07CEBF752DDD45C1FF337 /* DailyView.swift in Sources */,
+				1CB2CEA181EE16FCFD3360BE /* FirebaseBootstrap.swift in Sources */,
+				910BB29BA308B303640FEF7B /* GridConverter.swift in Sources */,
+				01C035EF275BB416F74C1DC1 /* HomeView.swift in Sources */,
+				85E4FDD6A321369700EE8E9A /* HourlyPreviewSection.swift in Sources */,
+				F56368DF1769CE0140D08DE3 /* HourlyView.swift in Sources */,
+				72929D518A3D010D5F828CEF /* KMAAPIClient.swift in Sources */,
+				D40C9C3CBB0C1CC095E45126 /* KMABaseTime.swift in Sources */,
+				8BF0ADB4B650951BAE100887 /* KMAModels.swift in Sources */,
+				AE3CFDF93380E8A4DDC6E4CC /* KMAParsing.swift in Sources */,
+				8FC5DEF5880E5EA1D523BACE /* LocationService.swift in Sources */,
+				B9152A457C316C9B1F410018 /* NotificationPreferences.swift in Sources */,
+				79F448B27D20810D321B3D97 /* NotificationService.swift in Sources */,
+				95FC241B8611141D1A4C08E9 /* PushRegistrationService.swift in Sources */,
+				D4B92D5B27D9E5B1CFC83075 /* RadarAPIClient.swift in Sources */,
+				53C2C8E174406048AEFB1DB2 /* RadarModels.swift in Sources */,
+				B07312ACBECF84F559A1661F /* RadarView.swift in Sources */,
+				BA7AB22D88E7230BD4DAD8BF /* RainOverlayView.swift in Sources */,
+				7BA01BF0BBE3891A31AAFCF5 /* Secrets.swift in Sources */,
+				9CA0092E74E2D871146AD515 /* SettingsView.swift in Sources */,
+				40120866D8A709B374DD75E5 /* Shimmer.swift in Sources */,
+				52C5DF53A2F04E5B9C820F73 /* StatusScreens.swift in Sources */,
+				021C8D51870189E4A7A62B65 /* ThreeDaySummarySection.swift in Sources */,
+				FFB1DFAF02D872A54F1C4155 /* UbiColors.swift in Sources */,
+				C4224649C91F5232E54E6BF0 /* UbiGradients.swift in Sources */,
+				1B54A616B088931CD9D758DE /* UbiToggle.swift in Sources */,
+				B8B10EE882DF1FE194E2D7CA /* UbiTypography.swift in Sources */,
+				82CF59FDFC1895585395700D /* UbiWeatherApp.swift in Sources */,
+				D03319EFB0404A1636A5CD70 /* WeatherIconView.swift in Sources */,
+				44D96003F743C04011A76E22 /* WeatherModels.swift in Sources */,
+				CB21214C960E27D80C3F4C28 /* WeatherRepository.swift in Sources */,
+				A4EF0F4DA34C69DEE1EC6AE4 /* WeatherViewModel.swift in Sources */,
+				2B9707A4E58177B829BB54E2 /* WidgetSharedData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7CA042A3E6032B99903C4ACB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1596E87468CE021F112CAD8A /* UbiWeather */;
+			targetProxy = 7544A1D890F814DD70459339 /* PBXContainerItemProxy */;
+		};
+		9B874755134BB5E71DCF1A83 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 99010CCAE2138EAA0ED8E352 /* UbiWeatherWidgetExtension */;
+			targetProxy = 59BD5E64B734224F1E305825 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		149CFD9A5949EE583D669C44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UbiWeather/UbiWeather.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 87V7WR9QND;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = UbiWeather/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubiweather.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		22DA68A05EC9F637B4AFA49B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubiweather.UbiWeatherTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UbiWeather.app/UbiWeather";
+			};
+			name = Debug;
+		};
+		2CB7204F195941E69FFCDBD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		4A9EA2DB5B6364B497290342 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UbiWeatherWidget/UbiWeatherWidget.entitlements;
+				DEVELOPMENT_TEAM = 87V7WR9QND;
+				INFOPLIST_FILE = UbiWeatherWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubiweather.app.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		874DEB7F2FA01FCE27D34D1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = UbiWeather/UbiWeather.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 87V7WR9QND;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = UbiWeather/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubiweather.app;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C2A5F28AE03AE507A199EFB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CDD2117ED432EC73F24E3843 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UbiWeatherWidget/UbiWeatherWidget.entitlements;
+				DEVELOPMENT_TEAM = 87V7WR9QND;
+				INFOPLIST_FILE = UbiWeatherWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubiweather.app.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		EE6D821C31BAFF3447DF7908 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ubiweather.UbiWeatherTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UbiWeather.app/UbiWeather";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3FD5E51313AEACD28B62F1BE /* Build configuration list for PBXProject "UbiWeather" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2A5F28AE03AE507A199EFB4 /* Debug */,
+				2CB7204F195941E69FFCDBD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		56407089A9BD3F4A7F7AD77B /* Build configuration list for PBXNativeTarget "UbiWeatherTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22DA68A05EC9F637B4AFA49B /* Debug */,
+				EE6D821C31BAFF3447DF7908 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AAD5853F420EE74F487C41F1 /* Build configuration list for PBXNativeTarget "UbiWeather" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				149CFD9A5949EE583D669C44 /* Debug */,
+				874DEB7F2FA01FCE27D34D1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D6E29879F780DA4B59EDC048 /* Build configuration list for PBXNativeTarget "UbiWeatherWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDD2117ED432EC73F24E3843 /* Debug */,
+				4A9EA2DB5B6364B497290342 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CC9103BFEACBFDFDE2C890BA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0089A9B532DD4D6B8F878F9B /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC9103BFEACBFDFDE2C890BA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		5A9C1EF6632FCF4B765A14DF /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC9103BFEACBFDFDE2C890BA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		C8CFF35905BAB2FBF0CB9A94 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CC9103BFEACBFDFDE2C890BA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 912CB0E7A5B129EAB14F87E1 /* Project object */;
+}

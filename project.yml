@@ -1,0 +1,127 @@
+name: UbiWeather
+options:
+  bundleIdPrefix: com.ubiweather
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 11.0.0
+
+targets:
+  UbiWeather:
+    type: application
+    platform: iOS
+    sources:
+      - path: UbiWeather
+        excludes:
+          - "**/*.md"
+          - "**/*.example.swift"
+    info:
+      path: UbiWeather/Info.plist
+      properties:
+        CFBundleDisplayName: "소나기 알리미"
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        NSLocationWhenInUseUsageDescription: "현재 위치의 날씨와 비/소나기 알림을 보여드리기 위해 위치 정보가 필요해요."
+        UIAppFonts:
+          - Jua-Regular.ttf
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSAppTransportSecurity:
+          NSExceptionDomains:
+            weather.go.kr:
+              NSExceptionAllowsInsecureHTTPLoads: true
+              NSIncludesSubdomains: true
+            kma.go.kr:
+              NSExceptionAllowsInsecureHTTPLoads: true
+              NSIncludesSubdomains: true
+        UIBackgroundModes:
+          - fetch
+          - remote-notification
+        BGTaskSchedulerPermittedIdentifiers:
+          - com.ubiweather.app.refresh
+        CFBundleURLTypes:
+          - CFBundleURLSchemes:
+              - ubiweather
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ubiweather.app
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: true
+        DEVELOPMENT_TEAM: "87V7WR9QND"
+        CODE_SIGN_ENTITLEMENTS: UbiWeather/UbiWeather.entitlements
+    entitlements:
+      path: UbiWeather/UbiWeather.entitlements
+      properties:
+        aps-environment: development
+        com.apple.security.application-groups:
+          - group.com.ubiweather.app
+    dependencies:
+      - package: Firebase
+        product: FirebaseMessaging
+      - package: Firebase
+        product: FirebaseFirestore
+      - package: Firebase
+        product: FirebaseAuth
+      - target: UbiWeatherWidgetExtension
+        embed: true
+
+  UbiWeatherWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: UbiWeatherWidget
+      - path: UbiWeather/Shared/WidgetSharedData.swift
+      - path: UbiWeather/Models/WeatherModels.swift
+      - path: UbiWeather/Components/WeatherIconView.swift
+      - path: UbiWeather/Design/UbiColors.swift
+      - path: UbiWeather/Design/UbiGradients.swift
+    info:
+      path: UbiWeatherWidget/Info.plist
+      properties:
+        CFBundleDisplayName: "소나기 알리미"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ubiweather.app.widget
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        DEVELOPMENT_TEAM: "87V7WR9QND"
+        CODE_SIGN_ENTITLEMENTS: UbiWeatherWidget/UbiWeatherWidget.entitlements
+        SKIP_INSTALL: YES
+    entitlements:
+      path: UbiWeatherWidget/UbiWeatherWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.ubiweather.app
+
+  UbiWeatherTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: UbiWeatherTests
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: UbiWeather
+
+schemes:
+  UbiWeather:
+    build:
+      targets:
+        UbiWeather: all
+        UbiWeatherWidgetExtension: all
+        UbiWeatherTests: [test]
+    test:
+      targets:
+        - UbiWeatherTests

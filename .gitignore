@@ -1,0 +1,9 @@
+UbiWeather/Config/Secrets.swift
+UbiWeather/GoogleService-Info.plist
+build_dd/
+.swiftpm/
+*.xcresult/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+_workspace/

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소나기 알리미 - 개인정보 처리방침</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; line-height: 1.7; color: #222; background: #fafafa; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .updated { color: #888; font-size: 13px; margin-bottom: 32px; }
+  h2 { font-size: 17px; margin-top: 36px; border-left: 4px solid #4A90E2; padding-left: 10px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; }
+  th { background: #f0f4f8; }
+  ul { padding-left: 20px; }
+  .contact { background: #eef4fb; border-radius: 10px; padding: 16px 18px; margin-top: 12px; }
+  footer { margin-top: 48px; font-size: 12px; color: #999; }
+</style>
+</head>
+<body>
+  <h1>소나기 알리미 개인정보 처리방침</h1>
+  <p class="updated">시행일: 2026년 7월 11일</p>
+
+  <p>‘소나기 알리미’(이하 “앱”)는 이용자의 개인정보를 소중히 다루며, 아래와 같이 최소한의 정보만 수집·이용합니다. 이 앱은 회원가입이나 로그인을 요구하지 않으며, 이름·이메일·전화번호 등 개인을 식별할 수 있는 정보를 수집하지 않습니다.</p>
+
+  <h2>1. 수집하는 정보와 목적</h2>
+  <table>
+    <tr><th>수집 항목</th><th>수집 방법</th><th>이용 목적</th></tr>
+    <tr><td>위치 기반 격자 좌표(nx, ny)</td><td>기기 GPS로 얻은 위경도를 앱 내에서 기상청 격자 좌표로 변환 후 전송 — <b>원본 위경도 자체는 서버에 저장되지 않습니다</b></td><td>해당 지역의 날씨·강수 예보 조회, 비/소나기 알림 발송</td></tr>
+    <tr><td>익명 기기 식별자(UID)</td><td>앱 최초 실행 시 Firebase 익명 인증으로 자동 발급</td><td>알림 수신 기기 구분, 알림 중복 발송 방지</td></tr>
+    <tr><td>푸시 알림 토큰(FCM 토큰)</td><td>Apple 푸시 알림 등록 시 자동 발급</td><td>비/소나기 예보 발생 시 알림 발송</td></tr>
+    <tr><td>알림 환경설정(켜짐/꺼짐, 방해금지 시간 등)</td><td>이용자가 앱 내 설정 화면에서 직접 입력</td><td>이용자가 원하는 조건에서만 알림 발송</td></tr>
+  </table>
+
+  <h2>2. 제3자 제공 및 처리위탁</h2>
+  <ul>
+    <li><b>기상청 공공데이터포털(data.go.kr)</b>: 날씨·레이더 정보 조회를 위해 격자 좌표만 전송하며, 개인을 식별할 수 있는 정보는 전송하지 않습니다.</li>
+    <li><b>Google Firebase</b>(Firestore, Authentication, Cloud Messaging): 위 1항의 정보 저장 및 알림 발송 처리를 위해 이용하며, Google의 개인정보 처리방침이 함께 적용됩니다.</li>
+  </ul>
+  <p>이 외에 이용자의 정보를 제3자에게 판매·제공하지 않으며, 광고나 트래킹 목적으로 이용하지 않습니다.</p>
+
+  <h2>3. 보유 및 이용 기간</h2>
+  <p>위 정보는 앱을 삭제하거나 알림 권한을 해제할 때까지 보관되며, 앱 삭제 시 기기와 연결된 익명 식별자는 더 이상 사용되지 않습니다. 이용자는 언제든지 아래 문의처를 통해 본인의 데이터 삭제를 요청할 수 있습니다.</p>
+
+  <h2>4. 이용자의 권리</h2>
+  <ul>
+    <li>위치 권한은 기기 설정에서 언제든지 철회할 수 있습니다.</li>
+    <li>알림 권한은 기기 설정 또는 앱 내 설정 화면에서 언제든지 끌 수 있습니다.</li>
+    <li>본인과 관련된 데이터의 삭제를 원할 경우 아래 연락처로 요청할 수 있습니다.</li>
+  </ul>
+
+  <h2>5. 만 14세 미만 이용자</h2>
+  <p>이 앱은 특정 연령층을 대상으로 하지 않으며, 회원가입이 없어 생년월일 등을 수집하지 않습니다.</p>
+
+  <h2>6. 문의처</h2>
+  <div class="contact">
+    개인정보 관련 문의: <a href="mailto:insung6853@gmail.com">insung6853@gmail.com</a>
+  </div>
+
+  <h2>7. 고지의 의무</h2>
+  <p>이 개인정보 처리방침은 관련 법령, 정책 또는 서비스 변경에 따라 개정될 수 있으며, 변경 시 이 페이지를 통해 공지합니다.</p>
+
+  <footer>© 2026 소나기 알리미</footer>
+</body>
+</html>
