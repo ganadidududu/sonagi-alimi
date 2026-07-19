@@ -93,7 +93,7 @@ final class WeatherRepository {
         applyDaily(vilage)
         vm.locationName = displayName
         vm.lastUpdatedLabel = "방금 업데이트"
-        updateWidgetSnapshot()
+        updateWidgetSnapshot(nx: grid.nx, ny: grid.ny)
 
         if let alert = KMAParsing.evaluateAlert(slots: slots, now: now) {
             await NotificationService.postIfNeeded(alert)
@@ -105,7 +105,7 @@ final class WeatherRepository {
     /// Mirrors `vm.alertLevel`/`vm.currentTemperature`/`vm.currentIcon` into the
     /// shared snapshot the widget reads — no separate alert logic, so the
     /// widget can never show something the Home banner disagrees with.
-    private func updateWidgetSnapshot() {
+    private func updateWidgetSnapshot(nx: Int, ny: Int) {
         let snapshot: WidgetWeatherSnapshot
         switch vm.alertLevel {
         case .shower(let windowText, let minutesUntil):
@@ -115,7 +115,7 @@ final class WeatherRepository {
                 line2: widgetLine2(windowText: windowText, minutesUntil: minutesUntil),
                 accessibilityLabel: "\(widgetMinutesPrefix(minutesUntil))\(widgetA11yWindowPhrase(windowText)) 소나기가 예상됩니다",
                 weatherCondition: WeatherCondition.shower.rawValue,
-                updatedAt: Date()
+                updatedAt: Date(), nx: nx, ny: ny
             )
         case .rain(let windowText, let minutesUntil):
             snapshot = WidgetWeatherSnapshot(
@@ -124,7 +124,7 @@ final class WeatherRepository {
                 line2: widgetLine2(windowText: windowText, minutesUntil: minutesUntil),
                 accessibilityLabel: "\(widgetMinutesPrefix(minutesUntil))\(widgetA11yWindowPhrase(windowText)) 비가 예상됩니다",
                 weatherCondition: WeatherCondition.rain.rawValue,
-                updatedAt: Date()
+                updatedAt: Date(), nx: nx, ny: ny
             )
         case .none:
             snapshot = WidgetWeatherSnapshot(
@@ -133,11 +133,45 @@ final class WeatherRepository {
                 line2: "\(vm.currentTemperature)° · \(vm.currentIcon.label)",
                 accessibilityLabel: "오늘 강수확률이 낮아 비 걱정이 없습니다. 현재 기온 \(vm.currentTemperature)도, \(vm.currentIcon.label)",
                 weatherCondition: vm.currentIcon.rawValue,
-                updatedAt: Date()
+                updatedAt: Date(), nx: nx, ny: ny
             )
         }
         WidgetSharedStore.save(snapshot)
         WidgetCenter.shared.reloadTimelines(ofKind: "UbiWeatherLockScreenWidget")
+
+        updateHomeWidgetSnapshot(nx: nx, ny: ny)
+    }
+
+    // MARK: - Home-screen widget snapshot (systemMedium — current + 6 slots)
+
+    private func updateHomeWidgetSnapshot(nx: Int, ny: Int) {
+        let alert: HomeWidgetSnapshot.Alert?
+        switch vm.alertLevel {
+        case .shower(let windowText, let minutesUntil):
+            alert = .init(kind: .shower, startText: widgetCompactWindowText(windowText), minutesUntil: minutesUntil)
+        case .rain(let windowText, let minutesUntil):
+            alert = .init(kind: .rain, startText: widgetCompactWindowText(windowText), minutesUntil: minutesUntil)
+        case .none:
+            alert = nil
+        }
+        let slots = vm.hourly.prefix(6).map { slot in
+            HomeWidgetSnapshot.Slot(
+                hourLabel: slot.hourLabel,
+                temperature: slot.temperature,
+                precipProbability: slot.precipProbability,
+                condition: slot.condition.rawValue
+            )
+        }
+        let snapshot = HomeWidgetSnapshot(
+            locationName: vm.locationName,
+            currentTemp: vm.currentTemperature,
+            currentCondition: vm.currentIcon.rawValue,
+            alert: alert,
+            slots: Array(slots),
+            updatedAt: Date(), nx: nx, ny: ny
+        )
+        WidgetSharedStore.saveHome(snapshot)
+        WidgetCenter.shared.reloadTimelines(ofKind: "UbiWeatherHomeWidget")
     }
 
     /// `KMAParsing.koreanHourRange` repeats "오전/오후" on both ends (e.g. "오후

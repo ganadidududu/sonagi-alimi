@@ -7,3 +7,7 @@ build_dd/
 xcuserdata/
 .DS_Store
 _workspace/
+
+# 중간 리사이즈 스크린샷 (광고형으로 대체, 재생성 가능)
+App_Store_스크린샷_6.5/
+App_Store_스크린샷_6.9/

@@ -24,10 +24,12 @@
 		40120866D8A709B374DD75E5 /* Shimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB0BCF60117EAA3C124FF43 /* Shimmer.swift */; };
 		44D96003F743C04011A76E22 /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB4EEFF3DFD1DE5E18DEB2 /* WeatherModels.swift */; };
 		47A657A94A24F0CA73B3FF8A /* KMABaseTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */; };
+		4913D8A351E39BAA0C1690E4 /* HomeWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */; };
 		4CCFABEF13E4937202CDA780 /* UbiWeatherWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40773B052F8FA1B4F3B7D6C5 /* UbiWeatherWidgetBundle.swift */; };
 		4F19CD5DE11AC22972A0BCE9 /* UbiWeatherLockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */; };
 		52C5DF53A2F04E5B9C820F73 /* StatusScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */; };
 		53C2C8E174406048AEFB1DB2 /* RadarModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD417E995D96DD0DE61EE2B5 /* RadarModels.swift */; };
+		58C7BEDDEF6DDD95D29E53F1 /* HomeMediumWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF3D4BA9E6ADD2608E5EC1 /* HomeMediumWidget.swift */; };
 		5D17BE95C1F3D9404166C3C1 /* GridConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */; };
 		69D9E40B0167C936E959ADA9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F084A522FDAA380B4425AAE8 /* GoogleService-Info.plist */; };
 		6BFB5A47EF3026D8107FD5E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CAB06456C2997065F87C41 /* ContentView.swift */; };
@@ -38,6 +40,7 @@
 		7BA01BF0BBE3891A31AAFCF5 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6E6DA34CB92D47AC42ACE /* Secrets.swift */; };
 		82CF59FDFC1895585395700D /* UbiWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B23B74A92ABCC415FB81A8F /* UbiWeatherApp.swift */; };
 		85E4FDD6A321369700EE8E9A /* HourlyPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */; };
+		86B68B98DF1CE4F95FA2D24E /* HomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB00D32ED725863D4098124 /* HomeWidgetView.swift */; };
 		8737882DEA2107EA4BD1067D /* CurrentWeatherCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496BFBBD50A5C63F16D70EEE /* CurrentWeatherCardView.swift */; };
 		8BF0ADB4B650951BAE100887 /* KMAModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B281FD2A061C3B5360951CFE /* KMAModels.swift */; };
 		8FC5DEF5880E5EA1D523BACE /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBF2C912270C754631B976 /* LocationService.swift */; };
@@ -122,7 +125,9 @@
 		4C639688A3940C1F8B531520 /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
 		56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiGradients.swift; sourceTree = "<group>"; };
 		5ABBF2C912270C754631B976 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetProvider.swift; sourceTree = "<group>"; };
 		678102CC210674996C88C688 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		6EB00D32ED725863D4098124 /* HomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetView.swift; sourceTree = "<group>"; };
 		6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
 		6F1D3042BE0A3B74E3EB9EBA /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		7AA187BA6D737A133190AFCC /* UbiWeatherWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = UbiWeatherWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +158,7 @@
 		D49F24E23078B94164B2A880 /* NotificationPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferencesTests.swift; sourceTree = "<group>"; };
 		DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiWeatherLockScreenProvider.swift; sourceTree = "<group>"; };
 		DD2D185185BC00621AF4794D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		E2CF3D4BA9E6ADD2608E5EC1 /* HomeMediumWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMediumWidget.swift; sourceTree = "<group>"; };
 		E7CAB06456C2997065F87C41 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EB9AEE5A923C87DA32D597FB /* PushRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistrationService.swift; sourceTree = "<group>"; };
 		F084A522FDAA380B4425AAE8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -176,6 +182,9 @@
 		1BA4E8B3ABF7D3E37CA2BC12 /* UbiWeatherWidget */ = {
 			isa = PBXGroup;
 			children = (
+				E2CF3D4BA9E6ADD2608E5EC1 /* HomeMediumWidget.swift */,
+				62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */,
+				6EB00D32ED725863D4098124 /* HomeWidgetView.swift */,
 				678102CC210674996C88C688 /* Info.plist */,
 				BAA132B5D23CC7C848DE024A /* LockScreenWidgetView.swift */,
 				DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */,
@@ -469,6 +478,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58C7BEDDEF6DDD95D29E53F1 /* HomeMediumWidget.swift in Sources */,
+				4913D8A351E39BAA0C1690E4 /* HomeWidgetProvider.swift in Sources */,
+				86B68B98DF1CE4F95FA2D24E /* HomeWidgetView.swift in Sources */,
 				096BC569874ABD7B1C0DB5BE /* LockScreenWidgetView.swift in Sources */,
 				AC51BAB0015B179819DB524E /* UbiColors.swift in Sources */,
 				36572A6E16F7690D7CD4C482 /* UbiGradients.swift in Sources */,

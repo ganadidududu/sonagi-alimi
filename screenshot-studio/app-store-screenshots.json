@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 2,
+  "appName": "소나기 알리미",
+  "themeId": "sky-pastel",
+  "connectedCanvas": true,
+  "locales": [
+    "en"
+  ],
+  "locale": "en",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/app-icon.png",
+  "slidesByDevice": {
+    "iphone": [
+      {
+        "id": "sonagi_1_hero",
+        "layout": "hero",
+        "label": {
+          "en": "소나기 알리미"
+        },
+        "headline": {
+          "en": "비 오기 2시간 전,\n미리 알려줘요"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01.png",
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 883.6212121212121,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 105.59999628170765,
+            "y": 363.1200070964223,
+            "width": 1109,
+            "height": 698,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "sonagi_6_widget",
+        "layout": "device-bottom",
+        "label": {
+          "en": "잠금화면 위젯"
+        },
+        "headline": {
+          "en": "잠금화면에서\n바로 확인"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/06.png",
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 880,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 105.59997023323103,
+            "y": 341.43999348941304,
+            "width": 1109,
+            "height": 691,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "sonagi_2_hourly",
+        "layout": "device-bottom",
+        "label": {
+          "en": "시간별 예보"
+        },
+        "headline": {
+          "en": "몇 시에 올지\n콕 집어서"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/02.png",
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 880,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 105.59996665794961,
+            "y": 381.4400041514121,
+            "width": 1109,
+            "height": 651,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "sonagi_3_radar",
+        "layout": "device-bottom",
+        "label": {
+          "en": "실시간 레이더"
+        },
+        "headline": {
+          "en": "지금 비구름,\n어디쯤 왔나"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/04.png",
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 880,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 105.60005910450445,
+            "y": 388.4399941917004,
+            "width": 1109,
+            "height": 644,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "sonagi_4_daily",
+        "layout": "device-bottom",
+        "label": {
+          "en": "주간 예보"
+        },
+        "headline": {
+          "en": "오늘·내일·모레\n한눈에"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/03.png",
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 880,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 105.60002948074634,
+            "y": 377.4400076628489,
+            "width": 1109,
+            "height": 655,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      },
+      {
+        "id": "sonagi_5_settings",
+        "layout": "hero",
+        "label": {
+          "en": "맞춤 알림"
+        },
+        "headline": {
+          "en": "위치도\n내 맘대로"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/05.png",
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 880,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          },
+          "caption": {
+            "x": 94.73636349335266,
+            "y": 348.271522567159,
+            "width": 1109,
+            "height": 807,
+            "rotation": 0,
+            "zIndex": 4
+          }
+        }
+      }
+    ],
+    "android": [],
+    "ipad": [],
+    "android-7": [],
+    "android-10": [],
+    "feature-graphic": []
+  },
+  "crossScreenMockupsByDevice": {
+    "iphone": [],
+    "ipad": [],
+    "android": [],
+    "android-7": [],
+    "android-10": [],
+    "feature-graphic": []
+  }
+}
