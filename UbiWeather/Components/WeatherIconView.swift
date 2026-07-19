@@ -8,6 +8,9 @@ struct WeatherIconView: View {
     let condition: WeatherCondition
     var size: CGFloat = 64
     var bob: Bool = false
+    /// Force the cute face on/off regardless of size — the home-screen widget
+    /// keeps faces at 34pt where the app timeline normally drops them.
+    var forceFace: Bool? = nil
 
     @State private var bobUp = false
 
@@ -15,7 +18,7 @@ struct WeatherIconView: View {
         Canvas { context, canvasSize in
             let scale = canvasSize.width / 64
             context.scaleBy(x: scale, y: scale)
-            let hasFace = size >= 60
+            let hasFace = forceFace ?? (size >= 60)
 
             switch condition {
             case .sunny:

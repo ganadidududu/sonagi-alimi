@@ -1,8 +1,10 @@
 import { onSchedule } from "firebase-functions/v2/scheduler";
+import { onRequest } from "firebase-functions/v2/https";
 import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
 import { evaluateAlert, parseHourlySlots, AlertResult, KmaFcstItem } from "./alertEvaluator";
+import { buildWidgetSnapshot, buildHomeFields } from "./widgetSnapshot";
 import { ultraSrtFcstBaseTime, isWithinDndWindow } from "./kst";
 
 admin.initializeApp();
@@ -63,12 +65,56 @@ async function processGrid(
   const items = await fetchUltraSrtFcst(nx, ny, serviceKey);
   if (!items) return;
 
+  // Cache the widget snapshot for this grid regardless of whether there's an
+  // alert — the lock-screen widget reads it via `getWidgetWeather`, so it must
+  // reflect the calm ("비 걱정 없어요") state too, not only rain events.
+  const snapshot = buildWidgetSnapshot(items);
+  const home = buildHomeFields(items);
+  await db.collection("gridWeather").doc(`${nx}_${ny}`).set(
+    { ...snapshot, home, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+    { merge: true }
+  );
+
   const slots = parseHourlySlots(items);
   const alert = evaluateAlert(slots);
   if (!alert) return;
 
   await Promise.all(docs.map((doc) => notifyDevice(doc, alert)));
 }
+
+/**
+ * Read endpoint the lock-screen widget calls (no Firebase SDK on the widget —
+ * just a lightweight URLSession GET). Returns the cached snapshot for a grid.
+ * KMA is never touched here; the scheduled function already populated it.
+ */
+export const getWidgetWeather = onRequest(
+  { region: "asia-northeast3", cors: true, invoker: "public" },
+  async (req, res) => {
+    const nx = String(req.query.nx ?? "");
+    const ny = String(req.query.ny ?? "");
+    if (!/^\d+$/.test(nx) || !/^\d+$/.test(ny)) {
+      res.status(400).json({ error: "nx and ny (integers) are required" });
+      return;
+    }
+    const doc = await db.collection("gridWeather").doc(`${nx}_${ny}`).get();
+    if (!doc.exists) {
+      res.status(404).json({ error: "no cached weather for this grid yet" });
+      return;
+    }
+    const d = doc.data()!;
+    res.set("Cache-Control", "public, max-age=300");
+    res.json({
+      // lock-screen widget fields
+      kind: d.kind,
+      line1: d.line1,
+      line2: d.line2,
+      accessibilityLabel: d.accessibilityLabel,
+      weatherCondition: d.weatherCondition,
+      // home-screen widget fields (6 slots + current + alert)
+      home: d.home ?? null,
+    });
+  }
+);
 
 async function fetchUltraSrtFcst(nx: string, ny: string, serviceKey: string): Promise<KmaFcstItem[] | null> {
   const { date, time } = ultraSrtFcstBaseTime(new Date());

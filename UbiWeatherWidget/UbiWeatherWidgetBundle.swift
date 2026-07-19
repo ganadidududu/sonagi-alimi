@@ -5,5 +5,6 @@ import SwiftUI
 struct UbiWeatherWidgetBundle: WidgetBundle {
     var body: some Widget {
         UbiWeatherLockScreenWidget()
+        HomeMediumWidget()
     }
 }

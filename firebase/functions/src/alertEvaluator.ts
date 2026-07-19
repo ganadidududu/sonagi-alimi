@@ -15,7 +15,7 @@ export interface HourlySlot {
   condition: WeatherCondition;
 }
 
-function weatherCondition(pty: number, sky: number | undefined): WeatherCondition {
+export function weatherCondition(pty: number, sky: number | undefined): WeatherCondition {
   if (pty === 4) return "shower";
   if (pty === 1 || pty === 2 || pty === 5 || pty === 6 || pty === 7) return "rain";
   if (sky === 3) return "partly";

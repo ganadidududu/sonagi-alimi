@@ -18,16 +18,40 @@ struct UbiWeatherLockScreenProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetEntry>) -> Void) {
-        let entry = currentEntry()
-        let fallbackReload = Calendar.current.date(byAdding: .minute, value: 30, to: Date())
-            ?? Date().addingTimeInterval(1800)
-        completion(Timeline(entries: [entry], policy: .after(fallbackReload)))
+        Task {
+            let entry = await refreshedEntry()
+            // iOS treats this as a hint and budgets ~40-70 refreshes/day; the
+            // read hits our cache, not KMA, so this costs no KMA quota.
+            let nextReload = Calendar.current.date(byAdding: .minute, value: 15, to: Date())
+                ?? Date().addingTimeInterval(900)
+            completion(Timeline(entries: [entry], policy: .after(nextReload)))
+        }
     }
 
+    /// Widget-gallery preview / synchronous fallback — reads the last local snapshot.
     private func currentEntry() -> WidgetEntry {
         guard let snapshot = WidgetSharedStore.load() else {
             return WidgetEntry(date: Date(), content: .noLocation)
         }
         return WidgetEntry(date: Date(), content: .snapshot(snapshot))
+    }
+
+    /// Pulls the server-cached snapshot for this widget's grid. Falls back to
+    /// the last local snapshot on any network failure so the widget never blanks.
+    private func refreshedEntry() async -> WidgetEntry {
+        guard let local = WidgetSharedStore.load() else {
+            return WidgetEntry(date: Date(), content: .noLocation)
+        }
+        guard let nx = local.nx, let ny = local.ny,
+              let remote = await WidgetRemote.fetch(nx: nx, ny: ny) else {
+            return WidgetEntry(date: Date(), content: .snapshot(local))
+        }
+        let fresh = WidgetWeatherSnapshot(
+            kind: remote.kind, line1: remote.line1, line2: remote.line2,
+            accessibilityLabel: remote.accessibilityLabel, weatherCondition: remote.weatherCondition,
+            updatedAt: Date(), nx: nx, ny: ny
+        )
+        WidgetSharedStore.save(fresh)  // keep for offline reuse
+        return WidgetEntry(date: Date(), content: .snapshot(fresh))
     }
 }
