@@ -54,7 +54,10 @@ final class WeatherRepository {
             try await load(coordinate: coordinate, displayName: "내 위치")
             let notifStatus = await NotificationService.authorizationStatus()
             vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
-        } catch is CLError {
+        } catch let error as CLError where error.code == .denied {
+            // Only an actual refusal belongs on the permission screen. Treating
+            // every CLError as "denied" sent users who had just granted access
+            // back to "위치 권한이 꺼져 있어요" whenever the first fix timed out.
             vm.screenState = .locationDenied
         } catch {
             vm.screenState = .error
