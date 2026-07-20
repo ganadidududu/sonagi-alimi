@@ -70,6 +70,13 @@ struct RadarView: View {
                                     Color(hex: 0xDBE6F0)
                                 }
                             }
+                            // `scaledToFill` reports a size WIDER than the card,
+                            // which would size the ZStack — and with it the
+                            // playback bar — past the rounded edge, clipping the
+                            // clock off. Pin the image's layout size to the
+                            // container so only its pixels overflow (the outer
+                            // `.clipped()` still trims those).
+                            .frame(width: geo.size.width, height: geo.size.height)
                             .scaleEffect(zoomScale)
                             .offset(panOffset)
                             .gesture(magnifyGesture(containerSize: geo.size))
@@ -133,10 +140,17 @@ struct RadarView: View {
             }
             .frame(height: 20)
 
+            // Jua is wider than the system font, so "15:20" overflowed the old
+            // fixed 48pt and clipped its right edge. Size to the text and give
+            // it layout priority so the scrubber (not the clock) absorbs the
+            // leftover width; minWidth keeps the bar from twitching as digits
+            // change during playback.
             Text(vm.radarTimeLabel)
                 .font(UbiFont.jua(13))
                 .foregroundStyle(UbiColors.textBody)
-                .frame(width: 48)
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(minWidth: 48, alignment: .trailing)
+                .layoutPriority(1)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
