@@ -121,7 +121,9 @@ final class WeatherRepository {
         vm.lastUpdatedLabel = "방금 업데이트"
         updateWidgetSnapshot(nx: grid.nx, ny: grid.ny)
 
-        if let alert = KMAParsing.evaluateAlert(slots: slots, now: now) {
+        // Only push for rain that hasn't started — "곧 비가 와요" while the user
+        // is already standing in it is noise.
+        if let alert = KMAParsing.evaluateAlert(slots: slots, now: now), !alert.isOngoing {
             await NotificationService.postIfNeeded(alert)
         }
     }
@@ -134,21 +136,21 @@ final class WeatherRepository {
     private func updateWidgetSnapshot(nx: Int, ny: Int) {
         let snapshot: WidgetWeatherSnapshot
         switch vm.alertLevel {
-        case .shower(let windowText, let minutesUntil):
+        case .shower(let windowText, let timing):
             snapshot = WidgetWeatherSnapshot(
                 kind: .shower,
-                line1: "소나기 임박",
-                line2: widgetLine2(windowText: windowText, minutesUntil: minutesUntil),
-                accessibilityLabel: "\(widgetMinutesPrefix(minutesUntil))\(widgetA11yWindowPhrase(windowText)) 소나기가 예상됩니다",
+                line1: timing == .ongoing ? "소나기 내리는 중" : "소나기 임박",
+                line2: widgetLine2(windowText: windowText, timing: timing),
+                accessibilityLabel: widgetA11y(windowText: windowText, timing: timing, noun: "소나기가"),
                 weatherCondition: WeatherCondition.shower.rawValue,
                 updatedAt: Date(), nx: nx, ny: ny
             )
-        case .rain(let windowText, let minutesUntil):
+        case .rain(let windowText, let timing):
             snapshot = WidgetWeatherSnapshot(
                 kind: .rain,
-                line1: "비 예정",
-                line2: widgetLine2(windowText: windowText, minutesUntil: minutesUntil),
-                accessibilityLabel: "\(widgetMinutesPrefix(minutesUntil))\(widgetA11yWindowPhrase(windowText)) 비가 예상됩니다",
+                line1: timing == .ongoing ? "비 내리는 중" : "비 예정",
+                line2: widgetLine2(windowText: windowText, timing: timing),
+                accessibilityLabel: widgetA11y(windowText: windowText, timing: timing, noun: "비가"),
                 weatherCondition: WeatherCondition.rain.rawValue,
                 updatedAt: Date(), nx: nx, ny: ny
             )
@@ -173,10 +175,10 @@ final class WeatherRepository {
     private func updateHomeWidgetSnapshot(nx: Int, ny: Int) {
         let alert: HomeWidgetSnapshot.Alert?
         switch vm.alertLevel {
-        case .shower(let windowText, let minutesUntil):
-            alert = .init(kind: .shower, startText: widgetCompactWindowText(windowText), minutesUntil: minutesUntil)
-        case .rain(let windowText, let minutesUntil):
-            alert = .init(kind: .rain, startText: widgetCompactWindowText(windowText), minutesUntil: minutesUntil)
+        case .shower(let windowText, let timing):
+            alert = .init(kind: .shower, startText: windowText, minutesUntil: timing.minutesOrZero)
+        case .rain(let windowText, let timing):
+            alert = .init(kind: .rain, startText: windowText, minutesUntil: timing.minutesOrZero)
         case .none:
             alert = nil
         }
@@ -200,12 +202,15 @@ final class WeatherRepository {
         WidgetCenter.shared.reloadTimelines(ofKind: "UbiWeatherHomeWidget")
     }
 
-    /// `KMAParsing.koreanHourRange` repeats "오전/오후" on both ends (e.g. "오후
-    /// 3시~오후 4시"); the widget's ~16자 budget only fits it stated once, which
-    /// is also how the design spec's own example ("오후 3시~4시 · 13분 후") reads.
-    private func widgetLine2(windowText: String, minutesUntil: Int) -> String {
+    /// The window already reads as a phrase ("지금부터 오후 3시까지", "오후 1시~오후
+    /// 3시"); drop the repeated 오전/오후 on the tail to fit the widget's ~16자
+    /// budget, then append the countdown only when the rain hasn't started.
+    private func widgetLine2(windowText: String, timing: AlertTiming) -> String {
         let compact = widgetCompactWindowText(windowText)
-        return minutesUntil > 60 ? compact : "\(compact) · \(minutesUntil)분 후"
+        switch timing {
+        case .ongoing: return compact
+        case .startsIn: return "\(compact) · \(timing.shortText) 후"
+        }
     }
 
     private func widgetCompactWindowText(_ text: String) -> String {
@@ -217,18 +222,13 @@ final class WeatherRepository {
         return text
     }
 
-    /// "오후 3시~오후 4시" -> "오후 3시부터 4시까지" for the VoiceOver sentence.
-    private func widgetA11yWindowPhrase(_ text: String) -> String {
-        let parts = text.components(separatedBy: "~")
-        guard parts.count == 2 else { return text }
-        let end = parts[1]
-            .replacingOccurrences(of: "오전 ", with: "")
-            .replacingOccurrences(of: "오후 ", with: "")
-        return "\(parts[0])부터 \(end)까지"
-    }
-
-    private func widgetMinutesPrefix(_ minutesUntil: Int) -> String {
-        minutesUntil > 60 ? "" : "\(minutesUntil)분 후 "
+    /// VoiceOver reads the whole sentence, so the ongoing window ("지금부터 …")
+    /// must not also get a "지금 " prefix — that stutters as "지금 지금부터".
+    private func widgetA11y(windowText: String, timing: AlertTiming, noun: String) -> String {
+        switch timing {
+        case .ongoing: return "\(windowText) \(noun) 내리고 있습니다"
+        case .startsIn: return "\(timing.shortText) 후 \(windowText) \(noun) 예상됩니다"
+        }
     }
 
     // MARK: - Radar tab (`getCmpImg`) — loaded lazily when the tab is opened

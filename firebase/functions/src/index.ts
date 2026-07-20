@@ -4,7 +4,7 @@ import { defineSecret } from "firebase-functions/params";
 import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
 import { evaluateAlert, parseHourlySlots, AlertResult, KmaFcstItem } from "./alertEvaluator";
-import { buildWidgetSnapshot, buildHomeFields } from "./widgetSnapshot";
+import { buildWidgetSnapshot, buildHomeFields, countdownText } from "./widgetSnapshot";
 import { ultraSrtFcstBaseTime, isWithinDndWindow } from "./kst";
 
 admin.initializeApp();
@@ -77,7 +77,9 @@ async function processGrid(
 
   const slots = parseHourlySlots(items);
   const alert = evaluateAlert(slots);
-  if (!alert) return;
+  // Rain already falling → the widget still shows it, but no push: a
+  // "곧 비가 와요" alert while the user is already in the rain is noise.
+  if (!alert || alert.isOngoing) return;
 
   await Promise.all(docs.map((doc) => notifyDevice(doc, alert)));
 }
@@ -154,8 +156,8 @@ async function notifyDevice(doc: FirebaseFirestore.QueryDocumentSnapshot, alert:
 
   const title = isShower ? "🌦 소나기 알림" : "🌧 비 알림";
   const body = isShower
-    ? `${alert.level.windowText}에 소나기가 지나가요. 약 ${alert.level.minutesUntil}분 뒤 시작 · 우산을 꼭 챙기세요 ☂️`
-    : `${alert.level.windowText}에 비가 내려요. 약 ${alert.level.minutesUntil}분 뒤 시작 · 우산을 챙기세요 ☂️`;
+    ? `${alert.level.windowText} 소나기가 지나가요. 약 ${countdownText(alert.level.minutesUntil)} 뒤 시작 · 우산을 꼭 챙기세요 ☂️`
+    : `${alert.level.windowText} 비가 내려요. 약 ${countdownText(alert.level.minutesUntil)} 뒤 시작 · 우산을 챙기세요 ☂️`;
 
   try {
     await admin.messaging().send({

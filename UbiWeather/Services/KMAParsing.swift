@@ -35,24 +35,52 @@ enum KMAParsing {
         /// Stable per rain-event key (date + start hour) — used to dedup
         /// notifications so the same event doesn't re-fire every refresh.
         let dedupKey: String
+        /// True when it's raining *right now*. Notifications skip these — a
+        /// "곧 비가 와요" push while the user is already in the rain is noise.
+        let isOngoing: Bool
     }
 
-    /// `slots[0]` is "now"; only the next ~2h (slots 1-2, since each covers ~1h) count as "upcoming".
+    private static func isWet(_ slot: HourlySlot) -> Bool {
+        slot.condition == .shower || slot.condition == .rain
+    }
+
+    /// Alerts when rain falls within the next ~2h (or is already falling), and
+    /// reports the **whole contiguous rain run**, not just the 2-slot horizon —
+    /// an all-day rain used to always read "2시간만 온다".
     static func evaluateAlert(slots: [HourlySlot], now: Date = Date()) -> AlertResult? {
-        let upcoming = Array(slots.dropFirst().prefix(2))
-        guard let firstRain = upcoming.first(where: { $0.condition == .shower || $0.condition == .rain }) else {
-            return nil
+        guard !slots.isEmpty else { return nil }
+
+        // Trigger horizon: now + next 2 hourly slots.
+        let horizon = min(2, slots.count - 1)
+        guard let firstIdx = (0...horizon).first(where: { isWet(slots[$0]) }) else { return nil }
+
+        // Extend through every consecutive wet slot we have forecast for.
+        var lastIdx = firstIdx
+        while lastIdx + 1 < slots.count, isWet(slots[lastIdx + 1]) { lastIdx += 1 }
+        // Rain still falling in the final slot → we can't see its end.
+        let openEnded = lastIdx == slots.count - 1
+
+        let first = slots[firstIdx]
+        let isShower = first.condition == .shower
+        let startHour = hourValue(from: first.hourLabel) ?? currentHour(now)
+        let endHour = (hourValue(from: slots[lastIdx].hourLabel) ?? startHour) + 1
+
+        let isOngoing = firstIdx == 0
+        let timing: AlertTiming = isOngoing
+            ? .ongoing
+            : .startsIn(minutes: minutesUntil(hour: startHour, now: now))
+
+        let windowText: String
+        switch (isOngoing, openEnded) {
+        case (true, true):   windowText = "당분간 계속"
+        case (true, false):  windowText = "지금부터 \(koreanHour(endHour))까지"
+        case (false, true):  windowText = "\(koreanHour(startHour))부터 계속"
+        case (false, false): windowText = "\(koreanHour(startHour))~\(koreanHour(endHour))"
         }
 
-        let isShower = firstRain.condition == .shower
-        let startHour = hourValue(from: firstRain.hourLabel) ?? currentHour(now)
-        let endHour = startHour + upcoming.filter { $0.condition == .shower || $0.condition == .rain }.count
-        let windowText = koreanHourRange(startHour: startHour, endHour: endHour)
-        let minutesUntil = minutesUntilNextHour(now: now)
-
         let level: AlertLevel = isShower
-            ? .shower(windowText: windowText, minutesUntil: minutesUntil)
-            : .rain(windowText: windowText, minutesUntil: minutesUntil)
+            ? .shower(windowText: windowText, timing: timing)
+            : .rain(windowText: windowText, timing: timing)
 
         var cal = Calendar(identifier: .gregorian)
         cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
@@ -61,7 +89,7 @@ enum KMAParsing {
         df.timeZone = cal.timeZone
         let dedupKey = "\(isShower ? "shower" : "rain")-\(df.string(from: now))-\(startHour)"
 
-        return AlertResult(level: level, icon: firstRain.condition, dedupKey: dedupKey)
+        return AlertResult(level: level, icon: first.condition, dedupKey: dedupKey, isOngoing: isOngoing)
     }
 
     private static func hourValue(from label: String) -> Int? {
@@ -74,15 +102,16 @@ enum KMAParsing {
         return cal.component(.hour, from: now)
     }
 
-    private static func minutesUntilNextHour(now: Date) -> Int {
+    /// Minutes from `now` to the top of `hour` — the real countdown to the rain,
+    /// where we previously reported minutes to the next o'clock regardless of
+    /// when the rain actually started.
+    static func minutesUntil(hour: Int, now: Date) -> Int {
         var cal = Calendar(identifier: .gregorian)
         cal.timeZone = TimeZone(identifier: "Asia/Seoul")!
-        let minute = cal.component(.minute, from: now)
-        return max(60 - minute, 1)
-    }
-
-    private static func koreanHourRange(startHour: Int, endHour: Int) -> String {
-        "\(koreanHour(startHour))~\(koreanHour(endHour))"
+        let comps = cal.dateComponents([.hour, .minute], from: now)
+        var diff = (hour - (comps.hour ?? 0)) * 60 - (comps.minute ?? 0)
+        if diff <= 0 { diff += 24 * 60 }   // rain lands after midnight
+        return max(diff, 1)
     }
 
     private static func koreanHour(_ hour24: Int) -> String {

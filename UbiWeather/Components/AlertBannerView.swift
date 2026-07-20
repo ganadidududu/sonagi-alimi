@@ -88,19 +88,29 @@ struct AlertBannerView: View {
     @ViewBuilder
     private var subtitleText: some View {
         switch level {
-        case .shower(_, let minutes):
-            Text("약 ") + Text("\(minutes)분").font(UbiFont.bannerMinutes) + Text(" 뒤 시작 · 우산을 꼭 챙기세요 ☂️")
-        case .rain(_, let minutes):
-            Text("약 ") + Text("\(minutes)분").font(UbiFont.bannerMinutes) + Text(" 뒤 시작 · 우산을 챙기세요 ☂️")
+        case .shower(_, let timing):
+            timingLine(timing, tail: " · 우산을 꼭 챙기세요 ☂️")
+        case .rain(_, let timing):
+            timingLine(timing, tail: " · 우산을 챙기세요 ☂️")
         case .none:
             Text("")
+        }
+    }
+
+    /// Already raining → no countdown; it used to claim "N분 뒤 시작" mid-downpour.
+    private func timingLine(_ timing: AlertTiming, tail: String) -> Text {
+        switch timing {
+        case .ongoing:
+            return Text("지금 내리는 중").font(UbiFont.bannerMinutes) + Text(tail)
+        case .startsIn:
+            return Text("약 ") + Text(timing.shortText).font(UbiFont.bannerMinutes) + Text(" 뒤 시작" + tail)
         }
     }
 }
 
 #Preview {
     AlertBannerView(
-        level: .shower(windowText: "오후 3시~4시 30분", minutesUntil: 13),
+        level: .shower(windowText: "오후 3시~오후 5시", timing: .startsIn(minutes: 13)),
         icon: .shower,
         accent: .amber
     )

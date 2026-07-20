@@ -26,9 +26,35 @@ enum WeatherCondition: String {
 }
 
 /// Home screen "killer feature" — the 0~2h precipitation alert banner.
+/// When the rain happens relative to now. Split out because "N분 뒤 시작" is
+/// nonsense while it's already raining — the banner said that for every
+/// all-day rain, and the minutes were counted to the next o'clock rather than
+/// to the actual start.
+enum AlertTiming: Equatable {
+    case ongoing                 // 이미 내리는 중
+    case startsIn(minutes: Int)  // 시작까지 남은 시간
+
+    /// "35분" / "1시간" — hours read better than "약 64분 뒤".
+    var shortText: String {
+        switch self {
+        case .ongoing: return ""
+        case .startsIn(let m):
+            return m < 60 ? "\(m)분" : "\(Int((Double(m) / 60).rounded()))시간"
+        }
+    }
+
+    /// Widget payload keeps a plain Int; 0 encodes "already raining".
+    var minutesOrZero: Int {
+        switch self {
+        case .ongoing: return 0
+        case .startsIn(let m): return m
+        }
+    }
+}
+
 enum AlertLevel {
-    case shower(windowText: String, minutesUntil: Int)
-    case rain(windowText: String, minutesUntil: Int)
+    case shower(windowText: String, timing: AlertTiming)
+    case rain(windowText: String, timing: AlertTiming)
     case none
 
     var badgeText: String? {

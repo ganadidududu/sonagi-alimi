@@ -43,7 +43,8 @@ enum BackgroundRefreshManager {
         let client = KMAAPIClient(serviceKey: Secrets.kmaServiceKey)
         guard let items = try? await client.ultraSrtFcst(nx: grid.nx, ny: grid.ny) else { return }
         let slots = KMAParsing.parseHourlySlots(items)
-        guard let alert = KMAParsing.evaluateAlert(slots: slots) else { return }
+        // Skip rain that's already falling — the push is a heads-up, not a recap.
+        guard let alert = KMAParsing.evaluateAlert(slots: slots), !alert.isOngoing else { return }
         await NotificationService.postIfNeeded(alert)
     }
 }

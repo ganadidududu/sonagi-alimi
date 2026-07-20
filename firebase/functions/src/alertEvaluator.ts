@@ -56,6 +56,8 @@ export type AlertLevel =
 export interface AlertResult {
   level: AlertLevel;
   dedupKey: string;
+  /** Raining already — the push is suppressed and the copy drops the countdown. */
+  isOngoing: boolean;
 }
 
 function hourValueFromLabel(label: string): number | undefined {
@@ -74,26 +76,58 @@ function koreanHourRange(startHour: number, endHour: number): string {
   return `${koreanHour(startHour)}~${koreanHour(endHour)}`;
 }
 
+function isWet(slot: HourlySlot): boolean {
+  return slot.condition === "shower" || slot.condition === "rain";
+}
+
+/** Minutes from now to the top of `hour` — the real countdown to the rain. */
+function minutesUntilHour(hour: number, now: Date): number {
+  let diff = (hour - currentHourKST(now)) * 60 - currentMinuteKST(now);
+  if (diff <= 0) diff += 24 * 60;
+  return Math.max(diff, 1);
+}
+
 /**
  * Mirrors `KMAParsing.evaluateAlert` in Swift EXACTLY (same window rule, same
  * dedupKey format) so a device's local dedup state and the server's agree on
  * what counts as "the same event" — see `NotificationPreferences` in the app.
+ *
+ * Reports the whole contiguous rain run (an all-day rain used to always read
+ * "2시간") and counts down to the actual start rather than the next o'clock.
+ * `minutesUntil === 0` encodes "already raining".
  */
 export function evaluateAlert(slots: HourlySlot[], now: Date = new Date()): AlertResult | null {
-  const upcoming = slots.slice(1, 3);
-  const firstRain = upcoming.find((s) => s.condition === "shower" || s.condition === "rain");
-  if (!firstRain) return null;
+  if (slots.length === 0) return null;
 
-  const isShower = firstRain.condition === "shower";
-  const startHour = hourValueFromLabel(firstRain.hourLabel) ?? currentHourKST(now);
-  const endHour = startHour + upcoming.filter((s) => s.condition === "shower" || s.condition === "rain").length;
-  const windowText = koreanHourRange(startHour, endHour);
-  const minutesUntil = Math.max(60 - currentMinuteKST(now), 1);
+  const horizon = Math.min(2, slots.length - 1);
+  let firstIdx = -1;
+  for (let i = 0; i <= horizon; i++) {
+    if (isWet(slots[i])) { firstIdx = i; break; }
+  }
+  if (firstIdx < 0) return null;
+
+  let lastIdx = firstIdx;
+  while (lastIdx + 1 < slots.length && isWet(slots[lastIdx + 1])) lastIdx++;
+  const openEnded = lastIdx === slots.length - 1;
+
+  const first = slots[firstIdx];
+  const isShower = first.condition === "shower";
+  const startHour = hourValueFromLabel(first.hourLabel) ?? currentHourKST(now);
+  const endHour = (hourValueFromLabel(slots[lastIdx].hourLabel) ?? startHour) + 1;
+
+  const isOngoing = firstIdx === 0;
+  const minutesUntil = isOngoing ? 0 : minutesUntilHour(startHour, now);
+
+  let windowText: string;
+  if (isOngoing && openEnded) windowText = "당분간 계속";
+  else if (isOngoing) windowText = `지금부터 ${koreanHour(endHour)}까지`;
+  else if (openEnded) windowText = `${koreanHour(startHour)}부터 계속`;
+  else windowText = koreanHourRange(startHour, endHour);
 
   const level: AlertLevel = isShower
     ? { type: "shower", windowText, minutesUntil }
     : { type: "rain", windowText, minutesUntil };
 
   const dedupKey = `${isShower ? "shower" : "rain"}-${formatDateKST(now)}-${startHour}`;
-  return { level, dedupKey };
+  return { level, dedupKey, isOngoing };
 }

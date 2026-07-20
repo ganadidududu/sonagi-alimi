@@ -36,20 +36,19 @@ function compactWindow(windowText: string): string {
   return windowText;
 }
 
+/** "35분" / "1시간" — hours read better than "64분 후". */
+export function countdownText(minutesUntil: number): string {
+  return minutesUntil < 60 ? `${minutesUntil}분` : `${Math.round(minutesUntil / 60)}시간`;
+}
+
 function line2Text(windowText: string, minutesUntil: number): string {
   const compact = compactWindow(windowText);
-  return minutesUntil > 60 ? compact : `${compact} · ${minutesUntil}분 후`;
+  // 0 → already raining, so there's nothing to count down to.
+  return minutesUntil <= 0 ? compact : `${compact} · ${countdownText(minutesUntil)} 후`;
 }
 
-function a11yWindow(windowText: string): string {
-  const parts = windowText.split("~");
-  if (parts.length !== 2) return windowText;
-  const end = parts[1].replace("오전 ", "").replace("오후 ", "");
-  return `${parts[0]}부터 ${end}까지`;
-}
-
-function minutesPrefix(minutesUntil: number): string {
-  return minutesUntil > 60 ? "" : `${minutesUntil}분 후 `;
+function timingPrefix(minutesUntil: number): string {
+  return minutesUntil <= 0 ? "지금 " : `${countdownText(minutesUntil)} 후 `;
 }
 
 /** Earliest fcst slot's current temp + sky/pty condition, for the calm state. */
@@ -118,7 +117,7 @@ export function buildHomeFields(items: KmaFcstItem[], now: Date = new Date()): H
 
   const alert = evaluateAlert(parseHourlySlots(items), now);
   const alertOut = alert
-    ? { kind: alert.level.type, startText: compactWindow(alert.level.windowText), minutesUntil: alert.level.minutesUntil }
+    ? { kind: alert.level.type, startText: alert.level.windowText, minutesUntil: alert.level.minutesUntil }
     : null;
 
   const current = slots[0];
@@ -136,13 +135,17 @@ export function buildWidgetSnapshot(items: KmaFcstItem[], now: Date = new Date()
 
   if (alert) {
     const isShower = alert.level.type === "shower";
+    const ongoing = alert.level.minutesUntil <= 0;
     return {
       kind: isShower ? "shower" : "rain",
-      line1: isShower ? "소나기 임박" : "비 예정",
+      line1: ongoing
+        ? (isShower ? "소나기 내리는 중" : "비 내리는 중")
+        : (isShower ? "소나기 임박" : "비 예정"),
       line2: line2Text(alert.level.windowText, alert.level.minutesUntil),
-      accessibilityLabel:
-        `${minutesPrefix(alert.level.minutesUntil)}${a11yWindow(alert.level.windowText)} ` +
-        `${isShower ? "소나기가" : "비가"} 예상됩니다`,
+      accessibilityLabel: ongoing
+        ? `${alert.level.windowText} ${isShower ? "소나기가" : "비가"} 내리고 있습니다`
+        : `${timingPrefix(alert.level.minutesUntil)}${alert.level.windowText} ` +
+          `${isShower ? "소나기가" : "비가"} 예상됩니다`,
       weatherCondition: isShower ? "shower" : "rain",
     };
   }
