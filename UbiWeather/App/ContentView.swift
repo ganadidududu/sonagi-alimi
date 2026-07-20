@@ -4,6 +4,7 @@ struct ContentView: View {
     @State private var vm = WeatherViewModel()
     @State private var locationService = LocationService()
     @State private var repository: WeatherRepository?
+    @State private var showingRegionPicker = false
 
     var body: some View {
         TabView(selection: $vm.selectedTab) {
@@ -25,6 +26,19 @@ struct ContentView: View {
             // Lock-screen widget's "위치를 설정해 주세요" state links here (widget spec §11).
             if url.host == "settings" { vm.selectedTab = .settings }
         }
+        .sheet(isPresented: $showingRegionPicker) {
+            RegionPickerView(
+                onSelect: { query, display in
+                    showingRegionPicker = false
+                    Task { await selectRegion(query, displayName: display) }
+                },
+                onUseCurrentLocation: {
+                    showingRegionPicker = false
+                    Task { await useCurrentLocation() }
+                },
+                onClose: { showingRegionPicker = false }
+            )
+        }
     }
 
     @ViewBuilder
@@ -34,7 +48,8 @@ struct ContentView: View {
             HomeView(
                 vm: vm,
                 onRetry: { Task { await refresh() } },
-                onRequestLocationPermission: { locationService.requestPermission() }
+                onRequestLocationPermission: { locationService.requestPermission() },
+                onOpenRegionPicker: { showingRegionPicker = true }
             )
         case .hourly: HourlyView(vm: vm)
         case .daily: DailyView(vm: vm)
@@ -43,8 +58,9 @@ struct ContentView: View {
         case .settings:
             SettingsView(
                 vm: vm,
-                onSetCurrentLocation: { Task { await refresh() } },
-                onSelectRegion: { name in Task { await selectRegion(name) } }
+                onSetCurrentLocation: { Task { await useCurrentLocation() } },
+                onSelectRegion: { name in Task { await selectRegion(name) } },
+                onOpenRegionPicker: { showingRegionPicker = true }
             )
         }
     }
@@ -55,10 +71,16 @@ struct ContentView: View {
         await repo.refresh()
     }
 
-    private func selectRegion(_ name: String) async {
+    private func selectRegion(_ name: String, displayName: String? = nil) async {
         let repo = repository ?? WeatherRepository(vm: vm, location: locationService)
         repository = repo
-        await repo.selectRegion(named: name)
+        await repo.selectRegion(named: name, displayName: displayName)
+    }
+
+    private func useCurrentLocation() async {
+        let repo = repository ?? WeatherRepository(vm: vm, location: locationService)
+        repository = repo
+        await repo.useCurrentLocation()
     }
 
     private func loadRadar() async {

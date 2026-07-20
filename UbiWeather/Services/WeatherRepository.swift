@@ -19,6 +19,7 @@ final class WeatherRepository {
     }
 
     /// Called once on app launch, and again on pull-to-refresh / "다시 시도".
+    /// Honors a pinned region if the user picked one — otherwise follows GPS.
     func refresh() async {
         guard !Secrets.kmaServiceKey.isEmpty, Secrets.kmaServiceKey != "YOUR_KMA_SERVICE_KEY" else {
             vm.screenState = .error
@@ -26,6 +27,20 @@ final class WeatherRepository {
         }
         if apiClient == nil {
             apiClient = KMAAPIClient(serviceKey: Secrets.kmaServiceKey)
+        }
+
+        // A region chosen in Settings/the picker must survive refreshes and
+        // cold launches — only "현재 위치로 설정" clears it.
+        if let pinned = LocationPreference.manualRegion {
+            vm.screenState = .loading
+            do {
+                try await load(coordinate: pinned.coordinate, displayName: pinned.name)
+                let notifStatus = await NotificationService.authorizationStatus()
+                vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
+            } catch {
+                vm.screenState = .error
+            }
+            return
         }
 
         if location.isDenied {
@@ -46,11 +61,19 @@ final class WeatherRepository {
         }
     }
 
+    /// "현재 위치로 설정" — drop the pinned region and follow GPS again.
+    func useCurrentLocation() async {
+        LocationPreference.useCurrentLocation()
+        await refresh()
+    }
+
     /// Settings → "동/읍/면 검색" or tapping a saved region. Geocodes the name
     /// with `CLGeocoder` (no separate API/key needed) and re-runs the same
     /// pipeline as GPS, just anchored to that place instead of the device's
     /// live location — matches the PRD's "지역명 검색으로 nx/ny 선택" fallback.
-    func selectRegion(named query: String) async {
+    /// `displayName` lets the picker show a compact label ("서울 강남구") while
+    /// geocoding the precise full address ("서울특별시 강남구").
+    func selectRegion(named query: String, displayName: String? = nil) async {
         guard !Secrets.kmaServiceKey.isEmpty, Secrets.kmaServiceKey != "YOUR_KMA_SERVICE_KEY" else {
             vm.screenState = .error
             return
@@ -66,7 +89,10 @@ final class WeatherRepository {
                 vm.screenState = .error
                 return
             }
-            try await load(coordinate: coordinate, displayName: query)
+            // Pin it so refreshes/cold launches keep this region instead of
+            // snapping back to GPS, and so we never re-geocode the same place.
+            LocationPreference.setManualRegion(name: displayName ?? query, coordinate: coordinate)
+            try await load(coordinate: coordinate, displayName: displayName ?? query)
             let notifStatus = await NotificationService.authorizationStatus()
             vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
         } catch {

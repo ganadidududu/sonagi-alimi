@@ -4,6 +4,7 @@ struct SettingsView: View {
     @Bindable var vm: WeatherViewModel
     var onSetCurrentLocation: () -> Void = {}
     var onSelectRegion: (String) -> Void = { _ in }
+    var onOpenRegionPicker: () -> Void = {}
 
     @State private var searchText = ""
     @FocusState private var searchFieldFocused: Bool
@@ -47,17 +48,25 @@ struct SettingsView: View {
                 }
                 .padding(.bottom, 6)
 
-                HStack(spacing: 9) {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundStyle(UbiColors.textMuted2)
-                    TextField("동/읍/면으로 검색 (예: 마포구 서교동)", text: $searchText)
-                        .font(.system(size: 13.5))
-                        .submitLabel(.search)
-                        .focused($searchFieldFocused)
-                        .onSubmit(runSearch)
+                // 시/도 → 시/군/구 picker (replaces the old free-text-only field,
+                // which was easy to mistype and gave no sense of what's available).
+                Button(action: onOpenRegionPicker) {
+                    HStack(spacing: 9) {
+                        Image(systemName: "list.bullet")
+                            .foregroundStyle(UbiColors.primaryBlue)
+                        Text("시·도에서 지역 고르기")
+                            .font(.system(size: 13.5, weight: .medium))
+                            .foregroundStyle(UbiColors.textBody)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12))
+                            .foregroundStyle(UbiColors.textMuted2)
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 11)
+                .buttonStyle(.plain)
 
                 divider
 

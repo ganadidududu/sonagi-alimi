@@ -4,6 +4,7 @@ struct HomeView: View {
     @Bindable var vm: WeatherViewModel
     var onRetry: () -> Void = {}
     var onRequestLocationPermission: () -> Void = {}
+    var onOpenRegionPicker: () -> Void = {}
 
     private var showsTabContent: Bool {
         switch vm.screenState {
@@ -90,13 +91,19 @@ struct HomeView: View {
 
     private var locationHeader: some View {
         HStack {
-            HStack(spacing: 5) {
-                Text("📍 \(vm.locationName)")
-                    .font(UbiFont.locationHeader)
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 11))
-                    .opacity(0.6)
+            // The chevron used to be decoration only — it now opens the region
+            // picker, which is what users expect from a location + caret.
+            Button(action: onOpenRegionPicker) {
+                HStack(spacing: 5) {
+                    Text("📍 \(vm.locationName)")
+                        .font(UbiFont.locationHeader)
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 11))
+                        .opacity(0.6)
+                }
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
             Spacer()
             Button(action: onRetry) {
                 HStack(spacing: 5) {
