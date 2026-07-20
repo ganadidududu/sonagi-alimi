@@ -17,7 +17,7 @@ final class WeatherViewModel {
     var offlineLastUpdated: String = "14:32"
 
     // Alert banner (killer feature)
-    var alertLevel: AlertLevel = .shower(windowText: "오후 3시~4시 30분", minutesUntil: 13)
+    var alertLevel: AlertLevel = .shower(windowText: "오후 3시~오후 5시", timing: .startsIn(minutes: 13))
     var bannerIcon: WeatherCondition = .shower
 
     // Current weather card

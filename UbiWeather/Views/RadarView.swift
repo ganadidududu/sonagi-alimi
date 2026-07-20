@@ -63,13 +63,24 @@ struct RadarView: View {
                             AsyncImage(url: frame.url) { phase in
                                 switch phase {
                                 case .success(let image):
-                                    image.resizable().scaledToFill()
+                                    // `.resizable()` with both dimensions given
+                                    // below — aspect is preserved by construction,
+                                    // so no `scaledToFill` (which would report a
+                                    // size wider than the card and drag the
+                                    // playback bar past the rounded edge with it).
+                                    image.resizable()
                                 case .failure:
                                     Color(hex: 0xC3D3E2)
                                 default:
                                     Color(hex: 0xDBE6F0)
                                 }
                             }
+                            .frame(width: Self.radarDrawSize(for: geo.size).width,
+                                   height: Self.radarDrawSize(for: geo.size).height)
+                            .offset(x: Self.radarLegendOffset(for: geo.size))
+                            // Layout size stays the container's; only pixels spill
+                            // (the outer `.clipped()` trims them).
+                            .frame(width: geo.size.width, height: geo.size.height)
                             .scaleEffect(zoomScale)
                             .offset(panOffset)
                             .gesture(magnifyGesture(containerSize: geo.size))
@@ -90,6 +101,40 @@ struct RadarView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Trimming KMA's baked-in legend
+
+    /// `getCmpImg` composite frames are a fixed 635×620, with a colour-scale
+    /// legend and its tick labels painted into the rightmost 35px. We draw our
+    /// own 약함–강함 scale under the card, so that strip is duplicate furniture
+    /// sitting on top of the map — measured off a live frame, not eyeballed.
+    private static let radarImagePixelSize = CGSize(width: 635, height: 620)
+    private static let radarLegendPixelWidth: CGFloat = 35
+
+    private static var radarKeptPixelWidth: CGFloat {
+        radarImagePixelSize.width - radarLegendPixelWidth
+    }
+
+    /// Scale so the *kept* region — not the whole image — fills the container.
+    /// Doing the arithmetic in image pixels keeps this correct on every iPhone
+    /// width; a fixed percentage would over- or under-trim as the card's aspect
+    /// ratio changes which axis drives the fill.
+    private static func radarFillScale(for container: CGSize) -> CGFloat {
+        max(container.width / radarKeptPixelWidth,
+            container.height / radarImagePixelSize.height)
+    }
+
+    private static func radarDrawSize(for container: CGSize) -> CGSize {
+        let s = radarFillScale(for: container)
+        return CGSize(width: radarImagePixelSize.width * s,
+                      height: radarImagePixelSize.height * s)
+    }
+
+    /// The kept region is the image's left portion, so nudging right re-centres
+    /// it in the card and carries the legend off the trailing edge.
+    private static func radarLegendOffset(for container: CGSize) -> CGFloat {
+        radarLegendPixelWidth * radarFillScale(for: container) / 2
     }
 
     private func radarFrame(@ViewBuilder content: () -> some View) -> some View {
@@ -133,10 +178,17 @@ struct RadarView: View {
             }
             .frame(height: 20)
 
+            // Jua is wider than the system font, so "15:20" overflowed the old
+            // fixed 48pt and clipped its right edge. Size to the text and give
+            // it layout priority so the scrubber (not the clock) absorbs the
+            // leftover width; minWidth keeps the bar from twitching as digits
+            // change during playback.
             Text(vm.radarTimeLabel)
                 .font(UbiFont.jua(13))
                 .foregroundStyle(UbiColors.textBody)
-                .frame(width: 48)
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(minWidth: 48, alignment: .trailing)
+                .layoutPriority(1)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)

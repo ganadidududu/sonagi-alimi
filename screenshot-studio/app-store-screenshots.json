@@ -71,6 +71,27 @@
         }
       },
       {
+        "id": "sonagi_7_homewidget",
+        "layout": "device-bottom",
+        "label": {
+          "en": "홈 화면 위젯"
+        },
+        "headline": {
+          "en": "홈 화면에서\n6시간 한눈에"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/07.png",
+        "transforms": {
+          "device": {
+            "x": 180,
+            "y": 880,
+            "width": 960,
+            "height": 1960,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
         "id": "sonagi_2_hourly",
         "layout": "device-bottom",
         "label": {

@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-07-19T12:31:41.943Z",
+  "lastUpdated": "2026-07-20T02:54:45.878Z",
   "activeFeatures": [
     "weather-app",
     "Design",
@@ -49,9 +49,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-07-08T13:08:45.886Z",
-        "lastUpdated": "2026-07-11T01:48:07.485Z"
+        "lastUpdated": "2026-07-20T02:22:45.877Z"
       },
-      "lastFile": "/Users/son-inseong/Desktop/project/weather/UbiWeather/Models/WeatherViewModel.swift"
+      "lastFile": "/Users/son-inseong/Desktop/project/weather/UbiWeather/Models/KoreaRegions.swift"
     },
     "Components": {
       "phase": "do",
@@ -75,7 +75,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-07-08T13:12:20.366Z",
-        "lastUpdated": "2026-07-11T01:33:40.840Z"
+        "lastUpdated": "2026-07-20T02:26:34.406Z"
       },
       "lastFile": "/Users/son-inseong/Desktop/project/weather/UbiWeather/Views/SettingsView.swift"
     },
@@ -88,7 +88,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-07-08T13:12:37.933Z",
-        "lastUpdated": "2026-07-12T14:22:20.743Z"
+        "lastUpdated": "2026-07-20T02:54:45.878Z"
       },
       "lastFile": "/Users/son-inseong/Desktop/project/weather/UbiWeather/App/ContentView.swift"
     },
@@ -101,9 +101,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-07-08T13:50:06.676Z",
-        "lastUpdated": "2026-07-19T12:31:14.198Z"
+        "lastUpdated": "2026-07-20T02:54:01.781Z"
       },
-      "lastFile": "/Users/son-inseong/Desktop/project/weather/UbiWeather/Services/WeatherRepository.swift"
+      "lastFile": "/Users/son-inseong/Desktop/project/weather/UbiWeather/Services/LocationService.swift"
     },
     "Config": {
       "phase": "do",
@@ -205,9 +205,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-07-15T18:21:44.783Z",
-        "lastUpdated": "2026-07-15T18:21:44.783Z"
+        "lastUpdated": "2026-07-19T12:44:58.577Z"
       },
-      "lastFile": "/private/tmp/claude-501/-Users-son-inseong-Desktop-project-weather/613f5487-1eb3-4448-a936-cb7e0313e496/scratchpad/gen_slides.py"
+      "lastFile": "/private/tmp/claude-501/-Users-son-inseong-Desktop-project-weather/613f5487-1eb3-4448-a936-cb7e0313e496/scratchpad/gen_home_mockup.py"
     }
   },
   "pipeline": {
@@ -218,7 +218,7 @@
   "session": {
     "startedAt": "2026-07-08T05:51:27.356Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-07-19T12:31:41.943Z"
+    "lastActivity": "2026-07-20T02:54:45.878Z"
   },
   "history": [
     {
@@ -1118,6 +1118,126 @@
     {
       "timestamp": "2026-07-19T12:31:41.943Z",
       "feature": "UbiWeatherWidget",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-19T12:44:58.577Z",
+      "feature": "scratchpad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:22:45.877Z",
+      "feature": "Models",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:23:14.610Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:23:32.800Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:23:48.091Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:23:58.240Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:24:36.937Z",
+      "feature": "Views",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:24:59.014Z",
+      "feature": "Views",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:25:07.633Z",
+      "feature": "Views",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:25:28.751Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:25:39.831Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:25:49.816Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:25:59.550Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:26:10.266Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:26:20.457Z",
+      "feature": "Views",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:26:34.406Z",
+      "feature": "Views",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:54:01.781Z",
+      "feature": "Services",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:54:10.803Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:54:26.387Z",
+      "feature": "App",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-07-20T02:54:45.878Z",
+      "feature": "App",
       "phase": "do",
       "action": "updated"
     }

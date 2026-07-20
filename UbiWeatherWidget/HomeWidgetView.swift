@@ -46,10 +46,14 @@ struct HomeWidgetView: View {
             ? [Color(hex: 0xF9A94A), Color(hex: 0xF4832F)]
             : [Color(hex: 0x5AA6EA), Color(hex: 0x3F7FD0)]
         let cond: WeatherCondition = isShower ? .shower : .rain
-        let title = isShower ? "소나기 임박" : "비 예정"
-        let sub = alert.minutesUntil > 60
-            ? alert.startText
-            : "\(alert.startText) · \(alert.minutesUntil)분 후"
+        // minutesUntil == 0 means it's already raining — no countdown then.
+        let ongoing = alert.minutesUntil <= 0
+        let title = ongoing ? (isShower ? "소나기 내리는 중" : "비 내리는 중")
+                            : (isShower ? "소나기 임박" : "비 예정")
+        let countdown = alert.minutesUntil < 60
+            ? "\(alert.minutesUntil)분"
+            : "\(Int((Double(alert.minutesUntil) / 60).rounded()))시간"
+        let sub = ongoing ? alert.startText : "\(alert.startText) · \(countdown) 후"
         return HStack(spacing: 8) {
             WeatherIconView(condition: cond, size: 22, forceFace: true)
             Text(title).font(.system(size: 13, weight: .semibold))
