@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @State private var vm = WeatherViewModel()
@@ -48,7 +49,7 @@ struct ContentView: View {
             HomeView(
                 vm: vm,
                 onRetry: { Task { await refresh() } },
-                onRequestLocationPermission: { locationService.requestPermission() },
+                onRequestLocationPermission: { Task { await requestLocationPermission() } },
                 onOpenRegionPicker: { showingRegionPicker = true }
             )
         case .hourly: HourlyView(vm: vm)
@@ -75,6 +76,20 @@ struct ContentView: View {
         let repo = repository ?? WeatherRepository(vm: vm, location: locationService)
         repository = repo
         await repo.selectRegion(named: name, displayName: displayName)
+    }
+
+    /// "위치 권한 허용" on the permission screen. Waits for the prompt's answer
+    /// and then retries the load, so the screen advances without a relaunch.
+    /// Once denied, iOS won't prompt again — send the user to Settings instead.
+    private func requestLocationPermission() async {
+        if locationService.isDenied {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                await UIApplication.shared.open(url)
+            }
+            return
+        }
+        await locationService.requestPermissionAndWait()
+        await refresh()
     }
 
     private func useCurrentLocation() async {
