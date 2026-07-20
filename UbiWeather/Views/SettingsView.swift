@@ -129,8 +129,61 @@ struct SettingsView: View {
                 toggleRow(icon: "🌧", title: "비 알림", subtitle: "강수확률 60% 이상일 때", isOn: $vm.notifRainOn)
                 divider
                 toggleRow(icon: "🌙", title: "방해금지 시간", subtitle: "22:00 ~ 07:00 알림 끔", isOn: $vm.notifDndOn)
+                divider
+                toggleRow(icon: "☀️", title: "아침 브리핑",
+                          subtitle: "정한 시각에 오늘 우산이 필요한지 알려줘요",
+                          isOn: $vm.briefingOn)
+                    .onChange(of: vm.briefingOn) { _, isOn in
+                        guard isOn else { return }
+                        Task { _ = await NotificationService.requestAuthorization() }
+                    }
+                if vm.briefingOn {
+                    briefingTimeRow
+                }
             }
         }
+    }
+
+    /// Only meaningful while the briefing is on, so it slides in under the
+    /// toggle rather than sitting there greyed out.
+    private var briefingTimeRow: some View {
+        HStack(spacing: 12) {
+            Text("🕖").font(.system(size: 18))
+            VStack(alignment: .leading, spacing: 2) {
+                Text("받을 시각")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(UbiColors.textBody)
+                Text("집을 나서기 전으로 맞춰두면 좋아요")
+                    .font(.system(size: 11.5))
+                    .foregroundStyle(UbiColors.textMuted)
+            }
+            Spacer()
+            HStack(spacing: 2) {
+                Picker("시", selection: $vm.briefingHour) {
+                    ForEach(0..<24, id: \.self) { hour in
+                        Text(hourLabel(hour)).tag(hour)
+                    }
+                }
+                // 10-minute steps: the server scheduler ticks every 10 minutes,
+                // so finer choices couldn't be honoured anyway.
+                Picker("분", selection: $vm.briefingMinute) {
+                    ForEach([0, 10, 20, 30, 40, 50], id: \.self) { minute in
+                        Text(String(format: "%02d분", minute)).tag(minute)
+                    }
+                }
+            }
+            .pickerStyle(.menu)
+            .tint(UbiColors.primaryBlue)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 15)
+        .transition(.opacity)
+    }
+
+    private func hourLabel(_ hour: Int) -> String {
+        let period = hour < 12 ? "오전" : "오후"
+        let hour12 = hour % 12 == 0 ? 12 : hour % 12
+        return "\(period) \(hour12)시"
     }
 
     // MARK: Screen

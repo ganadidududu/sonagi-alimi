@@ -83,18 +83,32 @@ final class WeatherViewModel {
     var notifShowerOn: Bool { didSet { NotificationPreferences.showerOn = notifShowerOn; syncPreferencesToPush() } }
     var notifRainOn: Bool { didSet { NotificationPreferences.rainOn = notifRainOn; syncPreferencesToPush() } }
     var notifDndOn: Bool { didSet { NotificationPreferences.dndOn = notifDndOn; syncPreferencesToPush() } }
+    var briefingOn: Bool { didSet { NotificationPreferences.briefingOn = briefingOn; syncPreferencesToPush() } }
+    var briefingHour: Int { didSet { NotificationPreferences.briefingHour = briefingHour; syncPreferencesToPush() } }
+    var briefingMinute: Int { didSet { NotificationPreferences.briefingMinute = briefingMinute; syncPreferencesToPush() } }
     var darkModeOn: Bool = false
+
+    /// "오전 7:30" for the settings row.
+    var briefingTimeLabel: String {
+        let period = briefingHour < 12 ? "오전" : "오후"
+        let hour12 = briefingHour % 12 == 0 ? 12 : briefingHour % 12
+        return String(format: "%@ %d:%02d", period, hour12, briefingMinute)
+    }
 
     init() {
         notifMasterOn = NotificationPreferences.masterOn
         notifShowerOn = NotificationPreferences.showerOn
         notifRainOn = NotificationPreferences.rainOn
         notifDndOn = NotificationPreferences.dndOn
+        briefingOn = NotificationPreferences.briefingOn
+        briefingHour = NotificationPreferences.briefingHour
+        briefingMinute = NotificationPreferences.briefingMinute
     }
 
     private func syncPreferencesToPush() {
         PushRegistrationService.shared.updatePreferences(
-            masterOn: notifMasterOn, showerOn: notifShowerOn, rainOn: notifRainOn, dndOn: notifDndOn
+            masterOn: notifMasterOn, showerOn: notifShowerOn, rainOn: notifRainOn, dndOn: notifDndOn,
+            briefingOn: briefingOn, briefingHour: briefingHour, briefingMinute: briefingMinute
         )
     }
 

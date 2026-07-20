@@ -11,6 +11,9 @@ enum NotificationPreferences {
         static let showerOn = "notif.showerOn"
         static let rainOn = "notif.rainOn"
         static let dndOn = "notif.dndOn"
+        static let briefingOn = "notif.briefingOn"
+        static let briefingHour = "notif.briefingHour"
+        static let briefingMinute = "notif.briefingMinute"
         static let lastNotifiedKey = "notif.lastNotifiedKey"
         static let lastGridNx = "notif.lastGridNx"
         static let lastGridNy = "notif.lastGridNy"
@@ -31,6 +34,25 @@ enum NotificationPreferences {
     static var dndOn: Bool {
         get { defaults.object(forKey: Key.dndOn) as? Bool ?? false }
         set { defaults.set(newValue, forKey: Key.dndOn) }
+    }
+
+    /// Off by default — an unrequested daily push would be an unpleasant
+    /// surprise for everyone already using the app.
+    static var briefingOn: Bool {
+        get { defaults.object(forKey: Key.briefingOn) as? Bool ?? false }
+        set { defaults.set(newValue, forKey: Key.briefingOn) }
+    }
+
+    /// Delivered by the server (the day's forecast isn't knowable in advance,
+    /// so a pre-scheduled local notification couldn't carry the right text).
+    /// The scheduler ticks every 10 minutes, hence the 10-minute steps.
+    static var briefingHour: Int {
+        get { defaults.object(forKey: Key.briefingHour) as? Int ?? 7 }
+        set { defaults.set(newValue, forKey: Key.briefingHour) }
+    }
+    static var briefingMinute: Int {
+        get { defaults.object(forKey: Key.briefingMinute) as? Int ?? 30 }
+        set { defaults.set(newValue, forKey: Key.briefingMinute) }
     }
 
     static var lastNotifiedKey: String? {
