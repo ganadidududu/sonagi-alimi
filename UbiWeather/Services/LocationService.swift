@@ -51,7 +51,25 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
         }
         guard !isDenied else { throw CLError(.denied) }
 
-        return try await withCheckedThrowingContinuation { continuation in
+        // In the seconds right after the user grants access the location
+        // subsystem often isn't warm yet, and `requestLocation()` answers with
+        // `.locationUnknown` instead of a fix. It does not retry on its own —
+        // that's ours to do. Without this, first-launch users bounced straight
+        // back to the permission screen despite having just said yes.
+        var lastError: Error = CLError(.locationUnknown)
+        for attempt in 0..<3 {
+            do {
+                return try await singleFix()
+            } catch let error as CLError where error.code == .locationUnknown {
+                lastError = error
+                try? await Task.sleep(for: .milliseconds(600 * (attempt + 1)))
+            }
+        }
+        throw lastError
+    }
+
+    private func singleFix() async throws -> CLLocationCoordinate2D {
+        try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
             manager.requestLocation()
         }
