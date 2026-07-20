@@ -70,8 +70,12 @@ enum KMAParsing {
             ? .ongoing
             : .startsIn(minutes: minutesUntil(hour: startHour, now: now))
 
+        // A run reaching midnight would render its end as "오전 12시", which
+        // plenty of people read as noon. Say it runs on instead of naming an
+        // hour that misleads.
+        let endsAtMidnight = endHour >= 24
         let windowText: String
-        switch (isOngoing, openEnded) {
+        switch (isOngoing, openEnded || endsAtMidnight) {
         case (true, true):   windowText = "당분간 계속"
         case (true, false):  windowText = "지금부터 \(koreanHour(endHour))까지"
         case (false, true):  windowText = "\(koreanHour(startHour))부터 계속"

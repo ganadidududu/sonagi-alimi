@@ -76,6 +76,16 @@ final class KMAParsingTests: XCTestCase {
         XCTAssertEqual(window, "오후 1시부터 계속")
     }
 
+    func testRunReachingMidnightAvoidsAmbiguousNoonWording() {
+        // Ending at hour 24 used to render "오전 12시", which many readers take
+        // as noon. Such a run should read as continuing instead.
+        let slots = [slot("지금", .rain), slot("22시", .rain), slot("23시", .rain)]
+        let result = KMAParsing.evaluateAlert(slots: slots, now: kstDate(2026, 7, 20, 21, 30))!
+        guard case .rain(let window, _) = result.level else { return XCTFail("expected .rain") }
+        XCTAssertFalse(window.contains("오전 12시"), "자정을 '오전 12시'로 표기하면 정오로 오해됨: \(window)")
+        XCTAssertEqual(window, "당분간 계속")
+    }
+
     func testClosedRunReportsItsEndHour() {
         let slots = [slot("지금", .cloudy), slot("13시", .rain), slot("14시", .rain), slot("15시", .sunny)]
         let result = KMAParsing.evaluateAlert(slots: slots, now: kstDate(2026, 7, 8, 12, 30))!

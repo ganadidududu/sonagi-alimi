@@ -40,12 +40,20 @@ final class PushRegistrationService: NSObject {
         updateDeviceDoc(["nx": nx, "ny": ny])
     }
 
-    func updatePreferences(masterOn: Bool, showerOn: Bool, rainOn: Bool, dndOn: Bool) {
+    func updatePreferences(
+        masterOn: Bool, showerOn: Bool, rainOn: Bool, dndOn: Bool,
+        briefingOn: Bool, briefingHour: Int, briefingMinute: Int
+    ) {
         updateDeviceDoc([
             "notifMasterOn": masterOn,
             "notifShowerOn": showerOn,
             "notifRainOn": rainOn,
             "notifDndOn": dndOn,
+            // The morning briefing is sent server-side at this KST time —
+            // the day's forecast can't be baked into a local notification.
+            "briefingOn": briefingOn,
+            "briefingHour": briefingHour,
+            "briefingMinute": briefingMinute,
         ])
     }
 

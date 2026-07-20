@@ -5,7 +5,8 @@ import { logger } from "firebase-functions";
 import * as admin from "firebase-admin";
 import { evaluateAlert, parseHourlySlots, AlertResult, KmaFcstItem } from "./alertEvaluator";
 import { buildWidgetSnapshot, buildHomeFields, countdownText } from "./widgetSnapshot";
-import { ultraSrtFcstBaseTime, isWithinDndWindow } from "./kst";
+import { ultraSrtFcstBaseTime, vilageFcstBaseTime, isWithinDndWindow, formatDateKST } from "./kst";
+import { buildBriefing, isBriefingDue } from "./briefing";
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -22,6 +23,11 @@ interface DeviceDoc {
   notifRainOn?: boolean;
   notifDndOn?: boolean;
   lastNotifiedKey?: string;
+  briefingOn?: boolean;
+  briefingHour?: number;
+  briefingMinute?: number;
+  /** KST `yyyyMMdd` of the last briefing sent — one per day, per device. */
+  lastBriefingDate?: string;
 }
 
 /**
@@ -53,8 +59,65 @@ export const checkWeatherAlerts = onSchedule(
     await Promise.all(
       Array.from(byGrid.entries()).map(([gridKey, docs]) => processGrid(gridKey, docs, serviceKey))
     );
+
+    // Reuses the device snapshot above rather than re-querying Firestore.
+    await sendDueBriefings(devicesSnap.docs, serviceKey);
   }
 );
+
+/**
+ * "Do I need an umbrella today?", delivered at each user's own time. Grouped by
+ * grid like the alerts so a neighbourhood costs one KMA call, and only for
+ * devices actually due this tick — on most ticks that's nobody and we make no
+ * calls at all.
+ */
+async function sendDueBriefings(
+  docs: FirebaseFirestore.QueryDocumentSnapshot[],
+  serviceKey: string
+): Promise<void> {
+  const now = new Date();
+  const due = docs.filter((doc) => {
+    const d = doc.data() as DeviceDoc;
+    if (!d.briefingOn || d.notifMasterOn === false || !d.fcmToken) return false;
+    if (d.nx == null || d.ny == null) return false;
+    return isBriefingDue(d.briefingHour ?? 7, d.briefingMinute ?? 30, d.lastBriefingDate, now);
+  });
+  if (due.length === 0) return;
+
+  const byGrid = new Map<string, FirebaseFirestore.QueryDocumentSnapshot[]>();
+  for (const doc of due) {
+    const { nx, ny } = doc.data() as DeviceDoc;
+    const key = `${nx},${ny}`;
+    if (!byGrid.has(key)) byGrid.set(key, []);
+    byGrid.get(key)!.push(doc);
+  }
+
+  await Promise.all(
+    Array.from(byGrid.entries()).map(async ([gridKey, gridDocs]) => {
+      const [nx, ny] = gridKey.split(",");
+      const items = await fetchVilageFcst(nx, ny, serviceKey);
+      if (!items) return;
+      const briefing = buildBriefing(items, now);
+      if (!briefing) return;
+
+      await Promise.all(
+        gridDocs.map(async (doc) => {
+          const { fcmToken } = doc.data() as DeviceDoc;
+          try {
+            await admin.messaging().send({
+              token: fcmToken!,
+              notification: { title: briefing.title, body: briefing.body },
+              apns: { payload: { aps: { sound: "default" } } },
+            });
+            await doc.ref.update({ lastBriefingDate: formatDateKST(now) });
+          } catch (err) {
+            logger.error(`briefing send failed for device ${doc.id}`, err);
+          }
+        })
+      );
+    })
+  );
+}
 
 async function processGrid(
   gridKey: string,
@@ -139,6 +202,32 @@ async function fetchUltraSrtFcst(nx: string, ny: string, serviceKey: string): Pr
     return (json?.response?.body?.items?.item ?? []) as KmaFcstItem[];
   } catch (err) {
     logger.error(`KMA fetch failed for grid ${nx},${ny}`, err);
+    return null;
+  }
+}
+
+/** Full-day forecast — the briefing needs hours the 6-hour ultra-short one can't reach. */
+async function fetchVilageFcst(nx: string, ny: string, serviceKey: string): Promise<KmaFcstItem[] | null> {
+  const { date, time } = vilageFcstBaseTime(new Date());
+  const url =
+    "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst" +
+    `?serviceKey=${encodeURIComponent(serviceKey)}&dataType=JSON&numOfRows=1000&pageNo=1` +
+    `&base_date=${date}&base_time=${time}&nx=${nx}&ny=${ny}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      logger.warn(`KMA vilage HTTP ${res.status} for grid ${nx},${ny}`);
+      return null;
+    }
+    const json = (await res.json()) as any;
+    if (json?.response?.header?.resultCode !== "00") {
+      logger.warn(`KMA vilage resultCode ${json?.response?.header?.resultCode} for grid ${nx},${ny}`);
+      return null;
+    }
+    return (json?.response?.body?.items?.item ?? []) as KmaFcstItem[];
+  } catch (err) {
+    logger.error(`KMA vilage fetch failed for grid ${nx},${ny}`, err);
     return null;
   }
 }
