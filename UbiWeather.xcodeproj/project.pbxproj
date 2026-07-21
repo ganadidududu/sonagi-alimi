@@ -42,6 +42,7 @@
 		75852BB3A7E16B432D5E64AD /* ForecastCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508A550DF47F7BF3DED370F1 /* ForecastCacheTests.swift */; };
 		79F448B27D20810D321B3D97 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BF308A026B09D0DF721267 /* NotificationService.swift */; };
 		7BA01BF0BBE3891A31AAFCF5 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6E6DA34CB92D47AC42ACE /* Secrets.swift */; };
+		81EFADBC7C1157DD2A04A554 /* AppUpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB4716C443E8A761765B435 /* AppUpdateService.swift */; };
 		82CF59FDFC1895585395700D /* UbiWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B23B74A92ABCC415FB81A8F /* UbiWeatherApp.swift */; };
 		85E4FDD6A321369700EE8E9A /* HourlyPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */; };
 		86B68B98DF1CE4F95FA2D24E /* HomeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB00D32ED725863D4098124 /* HomeWidgetView.swift */; };
@@ -54,6 +55,7 @@
 		9CA0092E74E2D871146AD515 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE501F586A44EACCB0E234B7 /* SettingsView.swift */; };
 		A4EF0F4DA34C69DEE1EC6AE4 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D3042BE0A3B74E3EB9EBA /* WeatherViewModel.swift */; };
 		A7B404C677515E11BFCB3B86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AB1200DF94031065A200F1B /* Assets.xcassets */; };
+		AACA7DE4FF16916EF4CC27CC /* AppUpdateServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4DB69D7EA3391001932160 /* AppUpdateServiceTests.swift */; };
 		AC51BAB0015B179819DB524E /* UbiColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908C668FCF02C266664A565F /* UbiColors.swift */; };
 		AE3CFDF93380E8A4DDC6E4CC /* KMAParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDB235749B037D1AC59CB5C /* KMAParsing.swift */; };
 		B07312ACBECF84F559A1661F /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C639688A3940C1F8B531520 /* RadarView.swift */; };
@@ -73,6 +75,7 @@
 		D40C9C3CBB0C1CC095E45126 /* KMABaseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */; };
 		D4B92D5B27D9E5B1CFC83075 /* RadarAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B47F641AD918D6807C849F8 /* RadarAPIClient.swift */; };
 		DAD6531DBF7E9333873FD51E /* UbiWeatherLockScreenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AB3BE51AEE2D182B588477 /* UbiWeatherLockScreenWidget.swift */; };
+		E44BBE30CBC5776A606103C9 /* UpdateGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC70C2FD495D6756DF1BBBB7 /* UpdateGateView.swift */; };
 		F56368DF1769CE0140D08DE3 /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E769E42C5A3B3C240D386C /* HourlyView.swift */; };
 		F8148518D953BF5EF5C347D7 /* Jua-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81F5E3AB53661B80EE8A57A4 /* Jua-Regular.ttf */; };
 		FFB1DFAF02D872A54F1C4155 /* UbiColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908C668FCF02C266664A565F /* UbiColors.swift */; };
@@ -114,6 +117,7 @@
 		02F4DE5164BB2B46B84867ED /* RainOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainOverlayView.swift; sourceTree = "<group>"; };
 		085CC07A2FC12282ADA75EC0 /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
 		09AB3BE51AEE2D182B588477 /* UbiWeatherLockScreenWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiWeatherLockScreenWidget.swift; sourceTree = "<group>"; };
+		0CB4716C443E8A761765B435 /* AppUpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateService.swift; sourceTree = "<group>"; };
 		0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusScreens.swift; sourceTree = "<group>"; };
 		0FCA2E0B64E11347E6160394 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0FF71E699D1763A520A9D621 /* UbiWeather.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = UbiWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +138,7 @@
 		4C639688A3940C1F8B531520 /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
 		508A550DF47F7BF3DED370F1 /* ForecastCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCacheTests.swift; sourceTree = "<group>"; };
 		56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiGradients.swift; sourceTree = "<group>"; };
+		5A4DB69D7EA3391001932160 /* AppUpdateServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateServiceTests.swift; sourceTree = "<group>"; };
 		5ABBF2C912270C754631B976 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetProvider.swift; sourceTree = "<group>"; };
 		678102CC210674996C88C688 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -164,6 +169,7 @@
 		B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefreshManager.swift; sourceTree = "<group>"; };
 		BAA132B5D23CC7C848DE024A /* LockScreenWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenWidgetView.swift; sourceTree = "<group>"; };
 		BB62DAEFE7C89F6745CAF8A4 /* LocationPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPreference.swift; sourceTree = "<group>"; };
+		BC70C2FD495D6756DF1BBBB7 /* UpdateGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateGateView.swift; sourceTree = "<group>"; };
 		CE0833860DAC2EB25F505378 /* WeatherIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconView.swift; sourceTree = "<group>"; };
 		CE501F586A44EACCB0E234B7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CF7C371B4E5DCB499ECDB603 /* WidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntry.swift; sourceTree = "<group>"; };
@@ -230,6 +236,7 @@
 		2BE9BB43379D6FFE69F51A16 /* UbiWeatherTests */ = {
 			isa = PBXGroup;
 			children = (
+				5A4DB69D7EA3391001932160 /* AppUpdateServiceTests.swift */,
 				508A550DF47F7BF3DED370F1 /* ForecastCacheTests.swift */,
 				A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */,
 				1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */,
@@ -293,6 +300,7 @@
 				0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */,
 				962FDC8A1E58484039D9A18E /* ThreeDaySummarySection.swift */,
 				015EF10DEF732E73AF4049C7 /* UbiToggle.swift */,
+				BC70C2FD495D6756DF1BBBB7 /* UpdateGateView.swift */,
 				CE0833860DAC2EB25F505378 /* WeatherIconView.swift */,
 			);
 			path = Components;
@@ -319,6 +327,7 @@
 		E6815B63E96FF26A33C06928 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				0CB4716C443E8A761765B435 /* AppUpdateService.swift */,
 				B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */,
 				F261BE24C6DADBD996CA86EB /* ConsensusClient.swift */,
 				6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */,
@@ -519,6 +528,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AACA7DE4FF16916EF4CC27CC /* AppUpdateServiceTests.swift in Sources */,
 				75852BB3A7E16B432D5E64AD /* ForecastCacheTests.swift in Sources */,
 				5D17BE95C1F3D9404166C3C1 /* GridConverterTests.swift in Sources */,
 				47A657A94A24F0CA73B3FF8A /* KMABaseTimeTests.swift in Sources */,
@@ -533,6 +543,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				386BB1F806EED6D08980EBE1 /* AlertBannerView.swift in Sources */,
+				81EFADBC7C1157DD2A04A554 /* AppUpdateService.swift in Sources */,
 				0C5FD2B99B6285619F4BCB55 /* BackgroundRefreshManager.swift in Sources */,
 				D24060F45DDE6A467F69DA84 /* ConsensusClient.swift in Sources */,
 				C41DD2166218C2F6035D5374 /* ConsensusSheet.swift in Sources */,
@@ -570,6 +581,7 @@
 				1B54A616B088931CD9D758DE /* UbiToggle.swift in Sources */,
 				B8B10EE882DF1FE194E2D7CA /* UbiTypography.swift in Sources */,
 				82CF59FDFC1895585395700D /* UbiWeatherApp.swift in Sources */,
+				E44BBE30CBC5776A606103C9 /* UpdateGateView.swift in Sources */,
 				D03319EFB0404A1636A5CD70 /* WeatherIconView.swift in Sources */,
 				44D96003F743C04011A76E22 /* WeatherModels.swift in Sources */,
 				CB21214C960E27D80C3F4C28 /* WeatherRepository.swift in Sources */,

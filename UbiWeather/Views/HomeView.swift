@@ -5,6 +5,9 @@ struct HomeView: View {
     var onRetry: () -> Void = {}
     var onRequestLocationPermission: () -> Void = {}
     var onOpenRegionPicker: () -> Void = {}
+    /// Soft update banner data, when a newer (but non-mandatory) version exists.
+    var softUpdate: (latest: String, storeURL: String)? = nil
+    var onDismissUpdate: () -> Void = {}
 
     private var showsTabContent: Bool {
         switch vm.screenState {
@@ -29,6 +32,10 @@ struct HomeView: View {
             }
 
             VStack(spacing: 0) {
+                if let soft = softUpdate {
+                    UpdateBanner(latest: soft.latest, storeURL: soft.storeURL, onDismiss: onDismissUpdate)
+                        .padding(.top, 8)
+                }
                 if case .offline(let lastUpdated) = vm.screenState {
                     OfflineStripView(lastUpdated: lastUpdated)
                 }

@@ -6,6 +6,8 @@ struct ContentView: View {
     @State private var locationService = LocationService()
     @State private var repository: WeatherRepository?
     @State private var showingRegionPicker = false
+    @State private var updateDecision: AppUpdateService.Decision = .none
+    @State private var softBannerDismissed = false
 
     var body: some View {
         TabView(selection: $vm.selectedTab) {
@@ -18,10 +20,20 @@ struct ContentView: View {
             }
         }
         .tint(UbiColors.primaryBlue)
+        // Hard gate wins over everything — a below-minimum build shouldn't even
+        // reach the weather. Checked once per launch; failures resolve to .none.
+        .overlay {
+            if case .hard(let storeURL) = updateDecision {
+                UpdateGateView(storeURL: storeURL)
+            }
+        }
         .task {
             let repo = repository ?? WeatherRepository(vm: vm, location: locationService)
             repository = repo
             await repo.refresh()
+        }
+        .task {
+            updateDecision = await AppUpdateService.check()
         }
         .onOpenURL { url in
             // Lock-screen widget's "위치를 설정해 주세요" state links here (widget spec §11).
@@ -42,6 +54,12 @@ struct ContentView: View {
         }
     }
 
+    /// Soft banner data, unless the user dismissed it this launch.
+    private var softUpdateData: (latest: String, storeURL: String)? {
+        guard !softBannerDismissed, case .soft(let latest, let url) = updateDecision else { return nil }
+        return (latest, url)
+    }
+
     @ViewBuilder
     private func screen(for tab: UbiTab) -> some View {
         switch tab {
@@ -50,7 +68,9 @@ struct ContentView: View {
                 vm: vm,
                 onRetry: { Task { await refresh() } },
                 onRequestLocationPermission: { Task { await requestLocationPermission() } },
-                onOpenRegionPicker: { showingRegionPicker = true }
+                onOpenRegionPicker: { showingRegionPicker = true },
+                softUpdate: softUpdateData,
+                onDismissUpdate: { softBannerDismissed = true }
             )
         case .hourly: HourlyView(vm: vm)
         case .daily: DailyView(vm: vm)
