@@ -23,8 +23,8 @@ targets:
       path: UbiWeather/Info.plist
       properties:
         CFBundleDisplayName: "소나기 알리미"
-        CFBundleShortVersionString: "1.0.3"
-        CFBundleVersion: "5"
+        CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "6"
         UILaunchScreen: {}
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
@@ -89,8 +89,8 @@ targets:
       path: UbiWeatherWidget/Info.plist
       properties:
         CFBundleDisplayName: "소나기 알리미"
-        CFBundleShortVersionString: "1.0.3"
-        CFBundleVersion: "5"
+        CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "6"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:

@@ -38,7 +38,7 @@ final class WeatherRepository {
                 let notifStatus = await NotificationService.authorizationStatus()
                 vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
             } catch {
-                vm.screenState = .error
+                showCachedOrError()
             }
             return
         }
@@ -60,8 +60,79 @@ final class WeatherRepository {
             // back to "위치 권한이 꺼져 있어요" whenever the first fix timed out.
             vm.screenState = .locationDenied
         } catch {
-            vm.screenState = .error
+            showCachedOrError()
         }
+    }
+
+    /// Called from every fetch-failure site. Shows the last cached forecast on
+    /// an "○○ 기준" offline strip if we have one, else the plain error screen.
+    private func showCachedOrError() {
+        guard let cached = ForecastCache.load() else {
+            vm.screenState = .error
+            return
+        }
+        applyCache(cached)
+        vm.screenState = .offline(lastUpdated: ForecastCache.timeLabel(for: cached.savedAt))
+    }
+
+    private func snapshotFromVM(savedAt: Date) -> ForecastCache.Snapshot {
+        let alert: ForecastCache.Snapshot.Alert?
+        switch vm.alertLevel {
+        case .shower(let w, let t): alert = .init(isShower: true, windowText: w, timingMinutes: t.minutesOrNil)
+        case .rain(let w, let t):   alert = .init(isShower: false, windowText: w, timingMinutes: t.minutesOrNil)
+        case .none:                 alert = nil
+        }
+        func daily(_ d: DailySummary) -> ForecastCache.Snapshot.Daily {
+            .init(dayLabel: d.dayLabel, dateLabel: d.dateLabel, condition: d.condition.rawValue,
+                  conditionLabel: d.conditionLabel, precipProbability: d.precipProbability,
+                  low: d.low, high: d.high, isToday: d.isToday)
+        }
+        return ForecastCache.Snapshot(
+            savedAt: savedAt, locationName: vm.locationName,
+            currentTemperature: vm.currentTemperature, currentSummaryLabel: vm.currentSummaryLabel,
+            currentIcon: vm.currentIcon.rawValue, humidityPercent: vm.humidityPercent,
+            windSpeed: vm.windSpeed, precipProbability: vm.precipProbability,
+            alert: alert, bannerIcon: vm.bannerIcon.rawValue,
+            hourly: vm.hourly.map { .init(hourLabel: $0.hourLabel, temperature: $0.temperature,
+                precipProbability: $0.precipProbability, condition: $0.condition.rawValue, conditionLabel: $0.conditionLabel) },
+            threeDay: vm.threeDay.map(daily), weekly: vm.weekly.map(daily),
+            peakPrecipWindowText: vm.peakPrecipWindowText
+        )
+    }
+
+    private func applyCache(_ c: ForecastCache.Snapshot) {
+        vm.locationName = c.locationName
+        vm.currentTemperature = c.currentTemperature
+        vm.currentSummaryLabel = c.currentSummaryLabel
+        vm.currentIcon = WeatherCondition(rawValue: c.currentIcon) ?? .cloudy
+        vm.humidityPercent = c.humidityPercent
+        vm.windSpeed = c.windSpeed
+        vm.precipProbability = c.precipProbability
+        vm.bannerIcon = WeatherCondition(rawValue: c.bannerIcon) ?? .cloudy
+        vm.peakPrecipWindowText = c.peakPrecipWindowText
+
+        if let a = c.alert {
+            let timing: AlertTiming = a.timingMinutes.map { .startsIn(minutes: $0) } ?? .ongoing
+            vm.alertLevel = a.isShower ? .shower(windowText: a.windowText, timing: timing)
+                                       : .rain(windowText: a.windowText, timing: timing)
+        } else {
+            vm.alertLevel = .none
+        }
+
+        func daily(_ d: ForecastCache.Snapshot.Daily) -> DailySummary {
+            DailySummary(dayLabel: d.dayLabel, dateLabel: d.dateLabel,
+                condition: WeatherCondition(rawValue: d.condition) ?? .cloudy,
+                conditionLabel: d.conditionLabel, precipProbability: d.precipProbability,
+                low: d.low, high: d.high, isToday: d.isToday)
+        }
+        vm.hourly = c.hourly.map {
+            HourlySlot(hourLabel: $0.hourLabel, temperature: $0.temperature,
+                precipProbability: $0.precipProbability,
+                condition: WeatherCondition(rawValue: $0.condition) ?? .cloudy,
+                conditionLabel: $0.conditionLabel)
+        }
+        vm.threeDay = c.threeDay.map(daily)
+        vm.weekly = c.weekly.map(daily)
     }
 
     /// "현재 위치로 설정" — drop the pinned region and follow GPS again.
@@ -99,7 +170,14 @@ final class WeatherRepository {
             let notifStatus = await NotificationService.authorizationStatus()
             vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
         } catch {
-            vm.screenState = .error
+            // Only reuse the cache if it's for this same region — a stale render
+            // of a different place would be misleading here.
+            if let cached = ForecastCache.load(), cached.locationName == (displayName ?? query) {
+                applyCache(cached)
+                vm.screenState = .offline(lastUpdated: ForecastCache.timeLabel(for: cached.savedAt))
+            } else {
+                vm.screenState = .error
+            }
         }
     }
 
@@ -123,6 +201,15 @@ final class WeatherRepository {
         vm.locationName = displayName
         vm.lastUpdatedLabel = "방금 업데이트"
         updateWidgetSnapshot(nx: grid.nx, ny: grid.ny)
+
+        // Persist this good render so a later KMA outage can fall back to it
+        // instead of blanking the home screen.
+        ForecastCache.save(snapshotFromVM(savedAt: now))
+
+        // Overlay the server's 3-source consensus (F3) onto the KMA-only daily
+        // list. Non-blocking and best-effort: if the fetch fails or a grid isn't
+        // cached yet, the cards stay exactly as KMA built them above.
+        await applyConsensus(nx: grid.nx, ny: grid.ny)
 
         // Only push for rain that hasn't started — "곧 비가 와요" while the user
         // is already standing in it is noise.
@@ -377,12 +464,45 @@ final class WeatherRepository {
                 dayLabel: dayLabel, dateLabel: dateLabel,
                 condition: weatherCondition(pty: pty, sky: sky),
                 conditionLabel: conditionLabel(pty: pty, sky: sky),
-                precipProbability: pop, low: low, high: high, isToday: isToday
+                precipProbability: pop, low: low, high: high, isToday: isToday,
+                dateKey: date
             )
         }
 
         vm.weekly = days
         vm.threeDay = Array(days.prefix(3))
+    }
+
+    /// Merges the server consensus into the already-built `vm.weekly`. The KMA
+    /// list is the spine (labels, min temp, ordering); consensus only overrides
+    /// the rain verdict, representative icon, precip %, and the badge — and only
+    /// for days it actually covers. Anything missing leaves the KMA value intact.
+    private func applyConsensus(nx: Int, ny: Int) async {
+        guard let remote = await ConsensusClient.fetch(nx: nx, ny: ny) else { return }
+        let byDate = Dictionary(uniqueKeysWithValues: remote.map { ($0.date, $0) })
+
+        let merged: [DailySummary] = vm.weekly.map { day in
+            guard let key = day.dateKey,
+                  let r = byDate[key],
+                  let consensus = r.toDailyConsensus() else { return day }
+
+            // Majority "rain" → shower/rain icon; majority "dry" keeps KMA's sky
+            // nuance (partly/cloudy/sunny) rather than flattening to a generic
+            // sun, since the domestic model reads local cloud better.
+            let condition: WeatherCondition = r.willRain ? day.rainingCondition : day.condition
+            let pop = r.precipProbability.map { Int($0.rounded()) } ?? day.precipProbability
+
+            return DailySummary(
+                dayLabel: day.dayLabel, dateLabel: day.dateLabel,
+                condition: condition,
+                conditionLabel: condition.label,
+                precipProbability: pop, low: day.low, high: day.high,
+                isToday: day.isToday, dateKey: day.dateKey, consensus: consensus
+            )
+        }
+
+        vm.weekly = merged
+        vm.threeDay = Array(merged.prefix(3))
     }
 
     private func distanceFromNoon(_ fcstTime: String?) -> Int {
