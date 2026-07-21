@@ -60,6 +60,7 @@
 		B9152A457C316C9B1F410018 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085CC07A2FC12282ADA75EC0 /* NotificationPreferences.swift */; };
 		BA7AB22D88E7230BD4DAD8BF /* RainOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F4DE5164BB2B46B84867ED /* RainOverlayView.swift */; };
 		BDB2A4A8AC942A7405D79539 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C8CFF35905BAB2FBF0CB9A94 /* FirebaseFirestore */; };
+		C41DD2166218C2F6035D5374 /* ConsensusSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692FE4912B0ED875C9FB0ED7 /* ConsensusSheet.swift */; };
 		C4224649C91F5232E54E6BF0 /* UbiGradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */; };
 		C563A0E7E7CD8ACDECBAB567 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0089A9B532DD4D6B8F878F9B /* FirebaseAuth */; };
 		C7B88D1AE14C1E8FAAF28E39 /* KoreaRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284C01C7139DD9236EA86D13 /* KoreaRegions.swift */; };
@@ -133,6 +134,7 @@
 		5ABBF2C912270C754631B976 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetProvider.swift; sourceTree = "<group>"; };
 		678102CC210674996C88C688 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		692FE4912B0ED875C9FB0ED7 /* ConsensusSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsensusSheet.swift; sourceTree = "<group>"; };
 		6EB00D32ED725863D4098124 /* HomeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetView.swift; sourceTree = "<group>"; };
 		6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseBootstrap.swift; sourceTree = "<group>"; };
 		6F1D3042BE0A3B74E3EB9EBA /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				299252545434315019DC7B65 /* AlertBannerView.swift */,
+				692FE4912B0ED875C9FB0ED7 /* ConsensusSheet.swift */,
 				496BFBBD50A5C63F16D70EEE /* CurrentWeatherCardView.swift */,
 				4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */,
 				02F4DE5164BB2B46B84867ED /* RainOverlayView.swift */,
@@ -525,6 +528,7 @@
 				386BB1F806EED6D08980EBE1 /* AlertBannerView.swift in Sources */,
 				0C5FD2B99B6285619F4BCB55 /* BackgroundRefreshManager.swift in Sources */,
 				D24060F45DDE6A467F69DA84 /* ConsensusClient.swift in Sources */,
+				C41DD2166218C2F6035D5374 /* ConsensusSheet.swift in Sources */,
 				6BFB5A47EF3026D8107FD5E5 /* ContentView.swift in Sources */,
 				8737882DEA2107EA4BD1067D /* CurrentWeatherCardView.swift in Sources */,
 				9BF07CEBF752DDD45C1FF337 /* DailyView.swift in Sources */,

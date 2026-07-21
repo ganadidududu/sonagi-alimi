@@ -114,8 +114,35 @@ struct DailyConsensus: Equatable {
     let sources: [SourceView]
 
     /// Badge text for a split verdict; nil when unanimous or single-source.
+    /// "3중 2" = the majority side's count (whichever way the 2 leaned).
     var badgeText: String? {
-        level == .majority ? "3중 \(rainVotes >= 2 ? rainVotes : voteCount - rainVotes)" : nil
+        guard level == .majority else { return nil }
+        let majoritySide = max(rainVotes, voteCount - rainVotes)
+        return "3중 \(majoritySide)"
+    }
+
+    /// The lone dissenter's name when exactly one source disagreed — drives the
+    /// "○○만 다른 예측을 냈어요" line in the detail sheet.
+    var minoritySourceName: String? {
+        guard level == .majority else { return nil }
+        let rainedSide = rainVotes >= voteCount - rainVotes
+        let dissenters = sources.filter { $0.saysRain != rainedSide }
+        return dissenters.count == 1 ? dissenters[0].displayName : nil
+    }
+
+    /// Bottom note in the detail sheet, wording lifted from the design reference.
+    var sheetNote: String {
+        switch level {
+        case .unanimous:
+            return "세 곳 모두 일치 · 신뢰도 높음"
+        case .majority:
+            if let name = minoritySourceName {
+                return "\(name)만 다른 예측을 냈어요. 세 모델이 갈릴 땐 숨기지 않고 다수 예측과 함께 이 사실을 보여드려요."
+            }
+            return "세 모델이 갈렸어요. 다수 예측을 보여드립니다."
+        case .single:
+            return "지금은 한 출처만 응답해 합의를 잠시 멈췄어요. 남은 예보를 그대로 보여드립니다."
+        }
     }
 
     struct SourceView: Equatable, Identifiable {

@@ -58,6 +58,29 @@ final class WeatherViewModel {
         DailySummary(dayLabel: "월", dateLabel: "7/14", condition: .shower, conditionLabel: "소나기", precipProbability: 70, low: 20, high: 25),
     ]
 
+    /// Header pill above the daily list. `nil` until the server consensus has
+    /// been merged in (fresh grid, offline) — the pill simply doesn't show, and
+    /// the list renders as the KMA-only forecast it already was.
+    var consensusSummary: ConsensusSummary? {
+        let voted = weekly.compactMap(\.consensus)
+        guard !voted.isEmpty else { return nil }
+        // Any degraded day means the whole vote is running on a fallback.
+        return voted.contains { $0.level == .single } ? .fallback : .active
+    }
+
+    enum ConsensusSummary {
+        case active    // 3 sources voting
+        case fallback  // one source down, consensus paused
+
+        var pillText: String {
+            switch self {
+            case .active: return "기상청·ECMWF·ICON 합의"
+            case .fallback: return "합의 일시 중단 · 기상청 단독"
+            }
+        }
+        var pillIcon: String { self == .active ? "⚖️" : "⚠️" }
+    }
+
     // Radar tab
     enum RadarLoadState: Equatable { case idle, loading, loaded, error(String) }
     var radarLoadState: RadarLoadState = .idle
