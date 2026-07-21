@@ -27,6 +27,7 @@
 		47A657A94A24F0CA73B3FF8A /* KMABaseTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */; };
 		4913D8A351E39BAA0C1690E4 /* HomeWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */; };
 		4CCFABEF13E4937202CDA780 /* UbiWeatherWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40773B052F8FA1B4F3B7D6C5 /* UbiWeatherWidgetBundle.swift */; };
+		4DAA79105460E85F57CF8652 /* ForecastCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53F5A68F90D7A1F2A745195 /* ForecastCache.swift */; };
 		4F19CD5DE11AC22972A0BCE9 /* UbiWeatherLockScreenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF5368C419F7838F88A5 /* UbiWeatherLockScreenProvider.swift */; };
 		52C5DF53A2F04E5B9C820F73 /* StatusScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D130D5B7CA0869A2E525E35 /* StatusScreens.swift */; };
 		53C2C8E174406048AEFB1DB2 /* RadarModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD417E995D96DD0DE61EE2B5 /* RadarModels.swift */; };
@@ -38,6 +39,7 @@
 		703027DB2A69DBC23705C9FC /* WidgetSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20873F82AC990E8E7966E43 /* WidgetSharedData.swift */; };
 		72929D518A3D010D5F828CEF /* KMAAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDAC949915D84F93FC2D856 /* KMAAPIClient.swift */; };
 		72C9F58B6546FAA770686397 /* KMAModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473ADF95C7460D2F89425D84 /* KMAModelsTests.swift */; };
+		75852BB3A7E16B432D5E64AD /* ForecastCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508A550DF47F7BF3DED370F1 /* ForecastCacheTests.swift */; };
 		79F448B27D20810D321B3D97 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85BF308A026B09D0DF721267 /* NotificationService.swift */; };
 		7BA01BF0BBE3891A31AAFCF5 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6E6DA34CB92D47AC42ACE /* Secrets.swift */; };
 		82CF59FDFC1895585395700D /* UbiWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B23B74A92ABCC415FB81A8F /* UbiWeatherApp.swift */; };
@@ -130,6 +132,7 @@
 		4BFB491614F6BC661B414A0B /* UbiTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiTypography.swift; sourceTree = "<group>"; };
 		4C3D10424ABE66999310793A /* HourlyPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyPreviewSection.swift; sourceTree = "<group>"; };
 		4C639688A3940C1F8B531520 /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
+		508A550DF47F7BF3DED370F1 /* ForecastCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCacheTests.swift; sourceTree = "<group>"; };
 		56ACDF3B7CABB23B6475D216 /* UbiGradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UbiGradients.swift; sourceTree = "<group>"; };
 		5ABBF2C912270C754631B976 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		62D8C4C81A01E826C920F450 /* HomeWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWidgetProvider.swift; sourceTree = "<group>"; };
@@ -152,6 +155,7 @@
 		9B6BB2DE3F3EFC78E253CCC6 /* GridConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridConverter.swift; sourceTree = "<group>"; };
 		A153FE662CC10D35BAA0B36D /* UbiWeatherTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = UbiWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridConverterTests.swift; sourceTree = "<group>"; };
+		A53F5A68F90D7A1F2A745195 /* ForecastCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCache.swift; sourceTree = "<group>"; };
 		AD417E995D96DD0DE61EE2B5 /* RadarModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarModels.swift; sourceTree = "<group>"; };
 		B13D673C5395209987669E8B /* KMAParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMAParsingTests.swift; sourceTree = "<group>"; };
 		B1B8C7E7BD76D25DA07903DC /* UbiWeatherWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UbiWeatherWidget.entitlements; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 		2BE9BB43379D6FFE69F51A16 /* UbiWeatherTests */ = {
 			isa = PBXGroup;
 			children = (
+				508A550DF47F7BF3DED370F1 /* ForecastCacheTests.swift */,
 				A2F1A39EA8B0A2676C6519D6 /* GridConverterTests.swift */,
 				1E3DA0004307B2A8B5D2AF48 /* KMABaseTimeTests.swift */,
 				473ADF95C7460D2F89425D84 /* KMAModelsTests.swift */,
@@ -317,6 +322,7 @@
 				B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */,
 				F261BE24C6DADBD996CA86EB /* ConsensusClient.swift */,
 				6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */,
+				A53F5A68F90D7A1F2A745195 /* ForecastCache.swift */,
 				9B6BB2DE3F3EFC78E253CCC6 /* GridConverter.swift */,
 				3CDAC949915D84F93FC2D856 /* KMAAPIClient.swift */,
 				F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */,
@@ -513,6 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75852BB3A7E16B432D5E64AD /* ForecastCacheTests.swift in Sources */,
 				5D17BE95C1F3D9404166C3C1 /* GridConverterTests.swift in Sources */,
 				47A657A94A24F0CA73B3FF8A /* KMABaseTimeTests.swift in Sources */,
 				72C9F58B6546FAA770686397 /* KMAModelsTests.swift in Sources */,
@@ -533,6 +540,7 @@
 				8737882DEA2107EA4BD1067D /* CurrentWeatherCardView.swift in Sources */,
 				9BF07CEBF752DDD45C1FF337 /* DailyView.swift in Sources */,
 				1CB2CEA181EE16FCFD3360BE /* FirebaseBootstrap.swift in Sources */,
+				4DAA79105460E85F57CF8652 /* ForecastCache.swift in Sources */,
 				910BB29BA308B303640FEF7B /* GridConverter.swift in Sources */,
 				01C035EF275BB416F74C1DC1 /* HomeView.swift in Sources */,
 				85E4FDD6A321369700EE8E9A /* HourlyPreviewSection.swift in Sources */,

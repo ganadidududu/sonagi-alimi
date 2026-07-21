@@ -50,6 +50,15 @@ enum AlertTiming: Equatable {
         case .startsIn(let m): return m
         }
     }
+
+    /// `nil` for ongoing rain — lets the forecast cache round-trip the two
+    /// timing cases without a sentinel value.
+    var minutesOrNil: Int? {
+        switch self {
+        case .ongoing: return nil
+        case .startsIn(let m): return m
+        }
+    }
 }
 
 enum AlertLevel {

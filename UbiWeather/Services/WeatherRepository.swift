@@ -38,7 +38,7 @@ final class WeatherRepository {
                 let notifStatus = await NotificationService.authorizationStatus()
                 vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
             } catch {
-                vm.screenState = .error
+                showCachedOrError()
             }
             return
         }
@@ -60,8 +60,79 @@ final class WeatherRepository {
             // back to "위치 권한이 꺼져 있어요" whenever the first fix timed out.
             vm.screenState = .locationDenied
         } catch {
-            vm.screenState = .error
+            showCachedOrError()
         }
+    }
+
+    /// Called from every fetch-failure site. Shows the last cached forecast on
+    /// an "○○ 기준" offline strip if we have one, else the plain error screen.
+    private func showCachedOrError() {
+        guard let cached = ForecastCache.load() else {
+            vm.screenState = .error
+            return
+        }
+        applyCache(cached)
+        vm.screenState = .offline(lastUpdated: ForecastCache.timeLabel(for: cached.savedAt))
+    }
+
+    private func snapshotFromVM(savedAt: Date) -> ForecastCache.Snapshot {
+        let alert: ForecastCache.Snapshot.Alert?
+        switch vm.alertLevel {
+        case .shower(let w, let t): alert = .init(isShower: true, windowText: w, timingMinutes: t.minutesOrNil)
+        case .rain(let w, let t):   alert = .init(isShower: false, windowText: w, timingMinutes: t.minutesOrNil)
+        case .none:                 alert = nil
+        }
+        func daily(_ d: DailySummary) -> ForecastCache.Snapshot.Daily {
+            .init(dayLabel: d.dayLabel, dateLabel: d.dateLabel, condition: d.condition.rawValue,
+                  conditionLabel: d.conditionLabel, precipProbability: d.precipProbability,
+                  low: d.low, high: d.high, isToday: d.isToday)
+        }
+        return ForecastCache.Snapshot(
+            savedAt: savedAt, locationName: vm.locationName,
+            currentTemperature: vm.currentTemperature, currentSummaryLabel: vm.currentSummaryLabel,
+            currentIcon: vm.currentIcon.rawValue, humidityPercent: vm.humidityPercent,
+            windSpeed: vm.windSpeed, precipProbability: vm.precipProbability,
+            alert: alert, bannerIcon: vm.bannerIcon.rawValue,
+            hourly: vm.hourly.map { .init(hourLabel: $0.hourLabel, temperature: $0.temperature,
+                precipProbability: $0.precipProbability, condition: $0.condition.rawValue, conditionLabel: $0.conditionLabel) },
+            threeDay: vm.threeDay.map(daily), weekly: vm.weekly.map(daily),
+            peakPrecipWindowText: vm.peakPrecipWindowText
+        )
+    }
+
+    private func applyCache(_ c: ForecastCache.Snapshot) {
+        vm.locationName = c.locationName
+        vm.currentTemperature = c.currentTemperature
+        vm.currentSummaryLabel = c.currentSummaryLabel
+        vm.currentIcon = WeatherCondition(rawValue: c.currentIcon) ?? .cloudy
+        vm.humidityPercent = c.humidityPercent
+        vm.windSpeed = c.windSpeed
+        vm.precipProbability = c.precipProbability
+        vm.bannerIcon = WeatherCondition(rawValue: c.bannerIcon) ?? .cloudy
+        vm.peakPrecipWindowText = c.peakPrecipWindowText
+
+        if let a = c.alert {
+            let timing: AlertTiming = a.timingMinutes.map { .startsIn(minutes: $0) } ?? .ongoing
+            vm.alertLevel = a.isShower ? .shower(windowText: a.windowText, timing: timing)
+                                       : .rain(windowText: a.windowText, timing: timing)
+        } else {
+            vm.alertLevel = .none
+        }
+
+        func daily(_ d: ForecastCache.Snapshot.Daily) -> DailySummary {
+            DailySummary(dayLabel: d.dayLabel, dateLabel: d.dateLabel,
+                condition: WeatherCondition(rawValue: d.condition) ?? .cloudy,
+                conditionLabel: d.conditionLabel, precipProbability: d.precipProbability,
+                low: d.low, high: d.high, isToday: d.isToday)
+        }
+        vm.hourly = c.hourly.map {
+            HourlySlot(hourLabel: $0.hourLabel, temperature: $0.temperature,
+                precipProbability: $0.precipProbability,
+                condition: WeatherCondition(rawValue: $0.condition) ?? .cloudy,
+                conditionLabel: $0.conditionLabel)
+        }
+        vm.threeDay = c.threeDay.map(daily)
+        vm.weekly = c.weekly.map(daily)
     }
 
     /// "현재 위치로 설정" — drop the pinned region and follow GPS again.
@@ -99,7 +170,14 @@ final class WeatherRepository {
             let notifStatus = await NotificationService.authorizationStatus()
             vm.screenState = notifStatus == .notDetermined ? .notificationPriming : .normal
         } catch {
-            vm.screenState = .error
+            // Only reuse the cache if it's for this same region — a stale render
+            // of a different place would be misleading here.
+            if let cached = ForecastCache.load(), cached.locationName == (displayName ?? query) {
+                applyCache(cached)
+                vm.screenState = .offline(lastUpdated: ForecastCache.timeLabel(for: cached.savedAt))
+            } else {
+                vm.screenState = .error
+            }
         }
     }
 
@@ -123,6 +201,10 @@ final class WeatherRepository {
         vm.locationName = displayName
         vm.lastUpdatedLabel = "방금 업데이트"
         updateWidgetSnapshot(nx: grid.nx, ny: grid.ny)
+
+        // Persist this good render so a later KMA outage can fall back to it
+        // instead of blanking the home screen.
+        ForecastCache.save(snapshotFromVM(savedAt: now))
 
         // Overlay the server's 3-source consensus (F3) onto the KMA-only daily
         // list. Non-blocking and best-effort: if the fetch fails or a grid isn't
