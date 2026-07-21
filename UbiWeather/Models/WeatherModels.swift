@@ -123,11 +123,8 @@ struct DailyConsensus: Equatable {
     let sources: [SourceView]
 
     /// Badge text for a split verdict; nil when unanimous or single-source.
-    /// "3중 2" = the majority side's count (whichever way the 2 leaned).
     var badgeText: String? {
-        guard level == .majority else { return nil }
-        let majoritySide = max(rainVotes, voteCount - rainVotes)
-        return "3중 \(majoritySide)"
+        level == .majority ? "경합" : nil
     }
 
     /// The lone dissenter's name when exactly one source disagreed — drives the

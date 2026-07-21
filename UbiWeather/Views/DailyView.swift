@@ -136,7 +136,7 @@ struct DailyView: View {
     }
 
     private func consensusBadge(_ text: String) -> some View {
-        Text("⚖️ \(text)")
+        Text(text)
             .font(.system(size: 10.5, weight: .bold))
             .foregroundStyle(UbiColors.showerHighlightLabel)
             .fixedSize()

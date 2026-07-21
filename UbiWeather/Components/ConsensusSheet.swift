@@ -45,7 +45,7 @@ struct ConsensusSheet: View {
             }
             Spacer()
             if let badge = consensus.badgeText {
-                Text("⚖️ \(badge)")
+                Text(badge)
                     .font(.system(size: 12, weight: .bold))
                     .foregroundStyle(UbiColors.showerHighlightLabel)
                     .padding(.horizontal, 9)
