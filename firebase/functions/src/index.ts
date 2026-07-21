@@ -7,6 +7,9 @@ import { evaluateAlert, parseHourlySlots, AlertResult, KmaFcstItem } from "./ale
 import { buildWidgetSnapshot, buildHomeFields, countdownText } from "./widgetSnapshot";
 import { ultraSrtFcstBaseTime, vilageFcstBaseTime, isWithinDndWindow, formatDateKST } from "./kst";
 import { buildBriefing, isBriefingDue } from "./briefing";
+import { buildConsensus } from "./consensus";
+import { fetchOpenMeteo } from "./openMeteo";
+import { gridToLatLon } from "./grid";
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -138,6 +141,11 @@ async function processGrid(
     { merge: true }
   );
 
+  // Daily 3-source consensus (F3). Independent of the alert path: it reads the
+  // day forecast (getVilageFcst) + Open-Meteo (ECMWF·ICON) and caches the vote
+  // so the app reads one agreed answer. Failure here must not block the alert.
+  await updateConsensus(nx, ny, serviceKey);
+
   const slots = parseHourlySlots(items);
   const alert = evaluateAlert(slots);
   // Rain already falling → the widget still shows it, but no push: a
@@ -145,6 +153,28 @@ async function processGrid(
   if (!alert || alert.isOngoing) return;
 
   await Promise.all(docs.map((doc) => notifyDevice(doc, alert)));
+}
+
+/**
+ * Computes and caches the daily consensus for one grid. KMA is the spine; if
+ * Open-Meteo is down the vote degrades to KMA-only ("single") rather than
+ * failing — the daily screen must never go blank. Cached under the same
+ * `gridWeather/{nx}_{ny}` doc the widgets already use.
+ */
+async function updateConsensus(nx: string, ny: string, serviceKey: string): Promise<void> {
+  try {
+    const items = await fetchVilageFcst(nx, ny, serviceKey);
+    if (!items) return; // no KMA day forecast → leave the previous cache as-is
+    const { lat, lon } = gridToLatLon(Number(nx), Number(ny));
+    const om = await fetchOpenMeteo(lat, lon);
+    const consensus = buildConsensus(items, om);
+    await db.collection("gridWeather").doc(`${nx}_${ny}`).set(
+      { consensus, consensusUpdatedAt: admin.firestore.FieldValue.serverTimestamp() },
+      { merge: true }
+    );
+  } catch (err) {
+    logger.error(`consensus update failed for grid ${nx},${ny}`, err);
+  }
 }
 
 /**
@@ -177,6 +207,8 @@ export const getWidgetWeather = onRequest(
       weatherCondition: d.weatherCondition,
       // home-screen widget fields (6 slots + current + alert)
       home: d.home ?? null,
+      // daily 3-source consensus (F3) — null until the scheduler first fills it
+      consensus: d.consensus ?? null,
     });
   }
 );

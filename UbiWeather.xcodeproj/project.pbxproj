@@ -66,6 +66,7 @@
 		C81EFE27B0DB3116EFC9C678 /* NotificationPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F24E23078B94164B2A880 /* NotificationPreferencesTests.swift */; };
 		CB21214C960E27D80C3F4C28 /* WeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD745D18338B306CBE6E732 /* WeatherRepository.swift */; };
 		D03319EFB0404A1636A5CD70 /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0833860DAC2EB25F505378 /* WeatherIconView.swift */; };
+		D24060F45DDE6A467F69DA84 /* ConsensusClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F261BE24C6DADBD996CA86EB /* ConsensusClient.swift */; };
 		D40C9C3CBB0C1CC095E45126 /* KMABaseTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */; };
 		D4B92D5B27D9E5B1CFC83075 /* RadarAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B47F641AD918D6807C849F8 /* RadarAPIClient.swift */; };
 		DAD6531DBF7E9333873FD51E /* UbiWeatherLockScreenWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AB3BE51AEE2D182B588477 /* UbiWeatherLockScreenWidget.swift */; };
@@ -168,6 +169,7 @@
 		E7CAB06456C2997065F87C41 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EB9AEE5A923C87DA32D597FB /* PushRegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushRegistrationService.swift; sourceTree = "<group>"; };
 		F084A522FDAA380B4425AAE8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F261BE24C6DADBD996CA86EB /* ConsensusClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsensusClient.swift; sourceTree = "<group>"; };
 		F7DAEB1BEBEB18CFBDCBDA1B /* KMABaseTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMABaseTime.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -310,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				B8D8EA7CF148CB063A49FE11 /* BackgroundRefreshManager.swift */,
+				F261BE24C6DADBD996CA86EB /* ConsensusClient.swift */,
 				6EEA33FC23143CD3B9239AAE /* FirebaseBootstrap.swift */,
 				9B6BB2DE3F3EFC78E253CCC6 /* GridConverter.swift */,
 				3CDAC949915D84F93FC2D856 /* KMAAPIClient.swift */,
@@ -521,6 +524,7 @@
 			files = (
 				386BB1F806EED6D08980EBE1 /* AlertBannerView.swift in Sources */,
 				0C5FD2B99B6285619F4BCB55 /* BackgroundRefreshManager.swift in Sources */,
+				D24060F45DDE6A467F69DA84 /* ConsensusClient.swift in Sources */,
 				6BFB5A47EF3026D8107FD5E5 /* ContentView.swift in Sources */,
 				8737882DEA2107EA4BD1067D /* CurrentWeatherCardView.swift in Sources */,
 				9BF07CEBF752DDD45C1FF337 /* DailyView.swift in Sources */,

@@ -124,6 +124,11 @@ final class WeatherRepository {
         vm.lastUpdatedLabel = "방금 업데이트"
         updateWidgetSnapshot(nx: grid.nx, ny: grid.ny)
 
+        // Overlay the server's 3-source consensus (F3) onto the KMA-only daily
+        // list. Non-blocking and best-effort: if the fetch fails or a grid isn't
+        // cached yet, the cards stay exactly as KMA built them above.
+        await applyConsensus(nx: grid.nx, ny: grid.ny)
+
         // Only push for rain that hasn't started — "곧 비가 와요" while the user
         // is already standing in it is noise.
         if let alert = KMAParsing.evaluateAlert(slots: slots, now: now), !alert.isOngoing {
@@ -377,12 +382,45 @@ final class WeatherRepository {
                 dayLabel: dayLabel, dateLabel: dateLabel,
                 condition: weatherCondition(pty: pty, sky: sky),
                 conditionLabel: conditionLabel(pty: pty, sky: sky),
-                precipProbability: pop, low: low, high: high, isToday: isToday
+                precipProbability: pop, low: low, high: high, isToday: isToday,
+                dateKey: date
             )
         }
 
         vm.weekly = days
         vm.threeDay = Array(days.prefix(3))
+    }
+
+    /// Merges the server consensus into the already-built `vm.weekly`. The KMA
+    /// list is the spine (labels, min temp, ordering); consensus only overrides
+    /// the rain verdict, representative icon, precip %, and the badge — and only
+    /// for days it actually covers. Anything missing leaves the KMA value intact.
+    private func applyConsensus(nx: Int, ny: Int) async {
+        guard let remote = await ConsensusClient.fetch(nx: nx, ny: ny) else { return }
+        let byDate = Dictionary(uniqueKeysWithValues: remote.map { ($0.date, $0) })
+
+        let merged: [DailySummary] = vm.weekly.map { day in
+            guard let key = day.dateKey,
+                  let r = byDate[key],
+                  let consensus = r.toDailyConsensus() else { return day }
+
+            // Majority "rain" → shower/rain icon; majority "dry" keeps KMA's sky
+            // nuance (partly/cloudy/sunny) rather than flattening to a generic
+            // sun, since the domestic model reads local cloud better.
+            let condition: WeatherCondition = r.willRain ? day.rainingCondition : day.condition
+            let pop = r.precipProbability.map { Int($0.rounded()) } ?? day.precipProbability
+
+            return DailySummary(
+                dayLabel: day.dayLabel, dateLabel: day.dateLabel,
+                condition: condition,
+                conditionLabel: condition.label,
+                precipProbability: pop, low: day.low, high: day.high,
+                isToday: day.isToday, dateKey: day.dateKey, consensus: consensus
+            )
+        }
+
+        vm.weekly = merged
+        vm.threeDay = Array(merged.prefix(3))
     }
 
     private func distanceFromNoon(_ fcstTime: String?) -> Int {

@@ -86,6 +86,54 @@ struct DailySummary: Identifiable {
     let low: Int
     let high: Int
     var isToday: Bool = false
+
+    /// Raw "YYYYMMDD" KST — the join key for the server consensus. nil on the
+    /// 3-day home preview where it's never needed.
+    var dateKey: String? = nil
+
+    /// Daily 3-source consensus (F3). `nil` on days the server hasn't voted on
+    /// yet — the card then renders exactly as before (KMA-only, no badge).
+    var consensus: DailyConsensus? = nil
+
+    /// The rain-ish condition to show when consensus flips a day to "rain" —
+    /// keeps shower vs rain if KMA already implied one, else plain rain.
+    var rainingCondition: WeatherCondition {
+        condition == .shower ? .shower : .rain
+    }
+}
+
+/// How much the three forecast sources agreed on a day's rain verdict, plus the
+/// per-source breakdown for the tap-through detail sheet. Populated from the
+/// server; the app never computes this itself.
+struct DailyConsensus: Equatable {
+    enum Level: String { case unanimous, majority, single }
+
+    let level: Level
+    let rainVotes: Int      // sources that said "rain" (of `voteCount`)
+    let voteCount: Int      // sources that actually voted (2 or 3)
+    let sources: [SourceView]
+
+    /// Badge text for a split verdict; nil when unanimous or single-source.
+    var badgeText: String? {
+        level == .majority ? "3중 \(rainVotes >= 2 ? rainVotes : voteCount - rainVotes)" : nil
+    }
+
+    struct SourceView: Equatable, Identifiable {
+        let source: String          // "kma" | "ecmwf" | "icon"
+        let saysRain: Bool
+        let tempMax: Int?
+        let precipProbability: Int?
+        var id: String { source }
+
+        var displayName: String {
+            switch source {
+            case "kma": return "기상청"
+            case "ecmwf": return "ECMWF (유럽)"
+            case "icon": return "ICON (독일)"
+            default: return source
+            }
+        }
+    }
 }
 
 enum HomeScreenState: Equatable {
