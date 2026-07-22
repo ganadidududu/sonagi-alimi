@@ -9,7 +9,6 @@ struct AlertBannerView: View {
     let accent: AlertAccent
     var animated: Bool = true
 
-    @State private var shineOffset: CGFloat = -1.2
     @State private var pulse = false
 
     var body: some View {
@@ -58,23 +57,11 @@ struct AlertBannerView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(accent.gradient)
         .clipShape(RoundedRectangle(cornerRadius: 28))
-        .overlay(shine.clipShape(RoundedRectangle(cornerRadius: 28)))
         .shadow(color: accent.shadowColor, radius: 18, x: 0, y: 10)
         .onAppear {
             guard animated else { return }
             withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) { pulse = true }
-            withAnimation(.easeInOut(duration: 4.5).repeatForever(autoreverses: false)) { shineOffset = 2.2 }
         }
-    }
-
-    private var shine: some View {
-        GeometryReader { geo in
-            LinearGradient(colors: [Color.white.opacity(0.32), .clear], startPoint: .leading, endPoint: .trailing)
-                .frame(width: geo.size.width * 0.6)
-                .rotationEffect(.degrees(20))
-                .offset(x: shineOffset * geo.size.width)
-        }
-        .allowsHitTesting(false)
     }
 
     private var titleText: String {
