@@ -213,6 +213,31 @@ export const getWidgetWeather = onRequest(
   }
 );
 
+/**
+ * Remote update policy the app checks on launch. Kept server-side so we can
+ * raise `minSupported` (hard gate) or `latest` (soft banner) WITHOUT shipping a
+ * new build — the whole point of a kill-switch is that it works on versions
+ * already in the field.
+ *
+ * Set the doc in Firestore at `appConfig/ios`:
+ *   { minSupported: "1.0.0", latest: "1.1.0", storeUrl: "https://apps.apple.com/app/id..." }
+ * Defaults below are permissive (block nothing) so a missing/typo'd doc can
+ * never lock users out.
+ */
+export const getAppConfig = onRequest(
+  { region: "asia-northeast3", cors: true, invoker: "public" },
+  async (_req, res) => {
+    const snap = await db.collection("appConfig").doc("ios").get();
+    const d = snap.exists ? snap.data()! : {};
+    res.set("Cache-Control", "public, max-age=600");
+    res.json({
+      minSupported: typeof d.minSupported === "string" ? d.minSupported : "0.0.0",
+      latest: typeof d.latest === "string" ? d.latest : "0.0.0",
+      storeUrl: typeof d.storeUrl === "string" ? d.storeUrl : "",
+    });
+  }
+);
+
 async function fetchUltraSrtFcst(nx: string, ny: string, serviceKey: string): Promise<KmaFcstItem[] | null> {
   const { date, time } = ultraSrtFcstBaseTime(new Date());
   const url =
