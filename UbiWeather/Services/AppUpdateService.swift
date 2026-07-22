@@ -29,7 +29,7 @@ enum AppUpdateService {
     }
 
     /// Default App Store deep link if the server didn't supply one.
-    private static let fallbackStoreURL = "https://apps.apple.com/app/id6749376100"
+    private static let fallbackStoreURL = "https://apps.apple.com/kr/app/id6790794687"
 
     static func check(current: String = currentVersion) async -> Decision {
         guard let url = URL(string: endpoint) else { return .none }
